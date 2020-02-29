@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundActivity"
+    tools:context=".Controller.RegisterActivity">
+
+    <Button
+        android:id="@+id/btnConnect"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnRegistration"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="70dp"
+        android:text="@string/connexion"
+        android:background="@color/backgroundActivity"
+        android:textColor="@color/textColor"
+        />
+
+    <Button
+        android:id="@+id/btnRegistration"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toEndOf="@id/btnConnect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="70dp"
+        android:text="@string/registration"
+        android:background="@color/green"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/backgroung_green_circle"
+        app:layout_constraintStart_toEndOf="@id/btnSubmit"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtName"
+        />
+
+    <EditText
+        android:id="@+id/txtName"
+        android:layout_width="375dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="@id/btnRegistration"
+        app:layout_constraintStart_toStartOf="@id/btnConnect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnRegistration"
+        android:layout_marginTop="40dp"
+        android:background="@color/white"
+        android:textColorHint="@color/textHintColor"
+        android:hint="@string/name"/>
+
+    <EditText
+        android:id="@+id/txtEmail"
+        android:layout_width="375dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="@id/btnRegistration"
+        app:layout_constraintStart_toStartOf="@id/btnConnect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtName"
+        android:layout_marginTop="40dp"
+        android:background="@color/white"
+        android:textColorHint="@color/textHintColor"
+        android:hint="@string/email"/>
+
+    <EditText
+        android:id="@+id/txtPassword"
+        android:layout_width="375dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="@id/btnRegistration"
+        app:layout_constraintStart_toStartOf="@id/btnConnect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtEmail"
+        android:layout_marginTop="40dp"
+        android:background="@color/white"
+        android:textColorHint="@color/textHintColor"
+        android:hint="@string/password"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/txtConfirmPassword"
+        android:layout_width="375dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="@id/btnRegistration"
+        app:layout_constraintStart_toStartOf="@id/btnConnect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPassword"
+        android:layout_marginTop="40dp"
+        android:background="@color/white"
+        android:textColorHint="@color/textHintColor"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtConfirmPassword"
+        android:layout_marginTop="40dp"
+        android:text="@string/registration"
+        android:background="@color/green"
+
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

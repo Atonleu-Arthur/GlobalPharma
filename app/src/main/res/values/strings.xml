@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Global Pharma</string>
+    <string name="connexion">Connexion</string>
+    <string name="registration">Inscription</string>
+    <string name="name">Nom</string>
+    <string name="name_or_email">Nom ou adresse mail</string>
+    <string name="email">E-mail</string>
+    <string name="password">Mot de passe</string>
+    <string name="confirm_password">Confirmation du mot de passe</string>
 </resources>
