@@ -11,16 +11,16 @@
         android:id="@+id/btnConnect"
         android:layout_width="180dp"
         android:layout_height="50dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="90dp"
+        android:background="@color/green"
+        android:cursorVisible="false"
+        android:text="@string/connexion"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@id/btnRegistration"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="70dp"
-        android:text="@string/connexion"
-        android:background="@color/green"
-        android:textColor="@color/white"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnRegistration"
@@ -31,7 +31,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="90dp"
         android:text="@string/registration"
         android:background="@color/backgroundActivity"
         android:textColor="@color/textColor"
@@ -65,5 +65,20 @@
         android:textColorHint="@color/textHintColor"
         android:hint="@string/password"
         android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPassword"
+        android:layout_marginTop="40dp"
+        android:text="@string/get_started"
+        android:background="@color/green"
+
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

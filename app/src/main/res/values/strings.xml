@@ -7,4 +7,5 @@
     <string name="email">E-mail</string>
     <string name="password">Mot de passe</string>
     <string name="confirm_password">Confirmation du mot de passe</string>
+    <string name="get_started">Connexion</string>
 </resources>

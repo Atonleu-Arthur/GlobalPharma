@@ -8,4 +8,5 @@
     <string name="email">E-mail</string>
     <string name="password">Password</string>
     <string name="confirm_password">Password confirmation</string>
+    <string name="get_started">Get started</string>
 </resources>
