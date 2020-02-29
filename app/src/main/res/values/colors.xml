@@ -3,6 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="beigeacccent">#F5F6FC</color>
+    <color name="vert">#0FC781</color>
+    <color name="textcolorgray">#818183</color>
+    <color name="white">#FFFFFF</color>
+    <color name="backgroundActivity">#F4F5FB</color>
     <color name="vertaccent">#0FC781</color>
+    <color name="textHintColor">#969996</color>
+    <color name="vertsombre">#BEEADF</color>
 </resources>
