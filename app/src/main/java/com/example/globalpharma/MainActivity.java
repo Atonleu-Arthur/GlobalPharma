@@ -12,4 +12,4 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 }
-//Chef cree les activites et lancons nous yes
+
