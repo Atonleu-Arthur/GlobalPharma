@@ -1,4 +1,4 @@
-package com.example.globalpharma;
+package com.example.globalpharma.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.globalpharma.R;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -35,14 +36,12 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // make the activity on full screen
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-        // when this activity is about to be launch we need to check if its openened before or not
 
         if (restorePrefData()) {
 
@@ -55,18 +54,16 @@ public class IntroActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_intro);
 
-        // hide the action bar
+
 
         getSupportActionBar().hide();
 
-        // ini views
         btnNext = findViewById(R.id.btn_next);
         btnGetStarted = findViewById(R.id.btn_get_started);
         tabIndicator = findViewById(R.id.tab_indicator);
         btnAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.button_animation);
         tvSkip = findViewById(R.id.tv_skip);
 
-        // fill list screen
 
         final List<ScreenItem> mList = new ArrayList<>();
         mList.add(new ScreenItem(" Prise de médicaments ","Enregister vos différents prise de médicaments et ceux de votre dans le le but d'être notifier a chaque prise\n",R.drawable.capsule));
@@ -78,11 +75,11 @@ public class IntroActivity extends AppCompatActivity {
         introViewPagerAdapter = new IntroViewPager(this,mList);
         screenPager.setAdapter(introViewPagerAdapter);
 
-        // setup tablayout with viewpager
+
 
         tabIndicator.setupWithViewPager(screenPager);
 
-        // next button click Listner
+        // ecoute du boutton continuer
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +108,7 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
-        // tablayout add change listener
+        // tablayout pour la suivi des photos parcourues
 
 
         tabIndicator.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
@@ -140,29 +137,20 @@ public class IntroActivity extends AppCompatActivity {
 
 
 
-        // Get Started button click listener
+        // Boutton commencer dechet
 
         btnGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                //open main activity
-
-                Intent mainActivity = new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(mainActivity);
-                // also we need to save a boolean value to storage so next time when the user run the app
-                // we could know that he is already checked the intro screen activity
-                // i'm going to use shared preferences to that process
-                savePrefsData();
-                finish();
-
+                Intent i = new Intent(IntroActivity.this,LoginActivity.class);
+                startActivity(i);
 
 
             }
         });
 
-        // skip button click listener
+        // boutton passer chef
 
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +184,7 @@ public class IntroActivity extends AppCompatActivity {
 
     }
 
-    // show the GETSTARTED Button and hide the indicator and the next button
+    // Montre le boutton commncer et l'indicateur tablayout
     private void loaddLastScreen() {
 
         btnNext.setVisibility(View.INVISIBLE);

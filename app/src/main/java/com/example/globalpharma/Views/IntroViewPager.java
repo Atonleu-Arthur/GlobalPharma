@@ -1,4 +1,4 @@
-package com.example.globalpharma;
+package com.example.globalpharma.Views;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.example.globalpharma.R;
 
 import java.util.List;
 

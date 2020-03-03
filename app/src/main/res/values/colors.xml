@@ -4,10 +4,12 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="vert">#0FC781</color>
-    <color name="textcolorgray">#818183</color>
+    <color name="textcolorgray">#8D8D8D</color>
     <color name="white">#FFFFFF</color>
     <color name="backgroundActivity">#F4F5FB</color>
     <color name="vertaccent">#0FC781</color>
     <color name="textHintColor">#969996</color>
     <color name="vertsombre">#BEEADF</color>
+    <color name="gradient_start_color">#4c84ff</color>
+
 </resources>

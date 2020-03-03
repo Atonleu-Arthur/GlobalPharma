@@ -31,28 +31,26 @@
 
     <TextView
         android:id="@+id/intro_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginBottom="4dp"
+        android:layout_width="276dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@color/textcolorgray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.083"
-        android:textColor="@color/textcolorgray"/>
+        />
 
     <ImageView
         android:id="@+id/intro_img"
-        android:layout_width="351dp"
-        android:layout_height="479dp"
+        android:layout_width="342dp"
+        android:layout_height="407dp"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.547"
         tools:srcCompat="@tools:sample/avatars[0]" />
 </androidx.constraintlayout.widget.ConstraintLayout>
