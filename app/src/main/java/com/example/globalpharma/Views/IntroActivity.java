@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.globalpharma.Model.ScreenItem;
 import com.example.globalpharma.R;
 import com.google.android.material.tabs.TabLayout;
 

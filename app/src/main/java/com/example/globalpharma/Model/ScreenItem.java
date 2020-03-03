@@ -1,4 +1,4 @@
-package com.example.globalpharma.Views;
+package com.example.globalpharma.Model;
 
 public class ScreenItem {
 

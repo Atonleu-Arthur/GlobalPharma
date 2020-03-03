@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.globalpharma.Model.ScreenItem;
 import com.example.globalpharma.R;
 
 import java.util.List;
