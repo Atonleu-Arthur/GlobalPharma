@@ -3,22 +3,26 @@
 
     <item
         android:id="@+id/home"
-        android:icon=""
+        android:icon="@drawable/ic_home_black_24dp"
         android:title="" />
 
     <item
-        android:id="@+id/drop"
-        android:icon=""
-        android:title="" />
+        android:id="@+id/pills"
+        android:icon="@drawable/ic_pills"
+        android:title="@string/Pills" />
+
 
     <item
-        android:id="@+id/heart"
-        android:icon=""
-        android:title="" />
-
+        android:id="@+id/gps"
+        android:icon="@drawable/ic_gps"
+        android:title="@string/Location" />
     <item
-        android:id="@+id/android"
-        android:icon=""
-        android:title="" />
+        android:id="@+id/Tchat"
+        android:icon="@drawable/ic_speech_bubble"
+        android:title="@string/Pills" />
+    <item
+        android:id="@+id/user"
+        android:icon="@drawable/ic_user"
+        android:title="@string/User" />
 
 </menu>

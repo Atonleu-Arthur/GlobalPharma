@@ -15,7 +15,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+          getSupportActionBar().hide();
         Button btnconnect;
         btnconnect=(Button) findViewById(R.id.btnConnect);
         btnconnect.setOnClickListener(new View.OnClickListener() {
