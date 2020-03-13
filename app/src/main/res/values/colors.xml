@@ -11,5 +11,13 @@
     <color name="textHintColor">#969996</color>
     <color name="vertsombre">#BEEADF</color>
     <color name="gradient_start_color">#4c84ff</color>
+    <color name="colorRed">#EC113D</color>
+    <color name="beige">#ECEEFA</color>
+    <color name="noir">#FFFFFF</color>
+    <color name="panelcolor">#333333</color>
+    <color name="blanc">#FFFFFF</color>
+    <color name="colorbuton">#1A8DFF</color>
+    <color name="colornull"></color>
+    <color name="textcolor">#545555</color>
 
 </resources>

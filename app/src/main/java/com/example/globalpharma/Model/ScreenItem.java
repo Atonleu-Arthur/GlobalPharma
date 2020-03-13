@@ -34,4 +34,5 @@ public class ScreenItem {
     public int getScreenImg() {
         return ScreenImg;
     }
+    /**7**/
 }

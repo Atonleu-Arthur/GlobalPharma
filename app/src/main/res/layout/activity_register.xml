@@ -52,6 +52,7 @@
         android:layout_width="358dp"
         android:layout_height="47dp"
         android:layout_marginTop="40dp"
+        android:paddingLeft="10dp"
         android:background="@drawable/radiusblanc"
         android:hint="@string/name"
         android:textColor="@color/textcolorgray"
@@ -68,6 +69,7 @@
         android:layout_width="358dp"
         android:layout_height="47dp"
         android:layout_marginTop="40dp"
+        android:paddingLeft="10dp"
         android:background="@drawable/radiusblanc"
         android:hint="@string/email"
         android:textColor="@color/textcolorgray"
@@ -87,7 +89,7 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/radiusblanc"
         android:hint="@string/password"
-
+        android:paddingLeft="10dp"
         android:inputType="textPassword"
         android:textColor="@color/textcolorgray"
         android:textColorHint="@color/textHintColor"
@@ -106,7 +108,7 @@
         android:background="@drawable/radiusblanc"
         android:hint="@string/confirm_password"
         android:inputType="textPassword"
-
+        android:paddingLeft="10dp"
         android:textColor="@color/textcolorgray"
         android:textColorHint="@color/textHintColor"
         android:textSize="15dp"

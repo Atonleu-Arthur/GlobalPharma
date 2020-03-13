@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon=""
+        android:title="" />
+
+    <item
+        android:id="@+id/drop"
+        android:icon=""
+        android:title="" />
+
+    <item
+        android:id="@+id/heart"
+        android:icon=""
+        android:title="" />
+
+    <item
+        android:id="@+id/android"
+        android:icon=""
+        android:title="" />
+
+</menu>
