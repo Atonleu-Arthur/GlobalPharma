@@ -44,7 +44,7 @@
         android:layout_marginTop="116dp"
         android:paddingLeft="10dp"
         android:background="@drawable/radiusblanc"
-        android:hint="@string/name_or_email"
+        android:hint="@string/name_or_phone"
         android:textColor="@color/textcolorgray"
         android:textColorHint="@color/textHintColor"
         android:textSize="12dp"
@@ -91,7 +91,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtConfirmPassword" />
+        app:layout_constraintTop_toBottomOf="@id/txtPassword" />
 
     <TextView
         android:id="@+id/textView2"
@@ -103,5 +103,6 @@
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
