@@ -15,22 +15,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
 
-        Button btnregist,btnSubmit2;
-        btnSubmit2=(Button) findViewById(R.id.btnSubmit2);
+        Button btnregist;
         btnregist=(Button) findViewById(R.id.btnRegistration);
         btnregist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(i);
-            }
-        });
-        btnSubmit2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, Accueil.class);
                 startActivity(i);
             }
         });

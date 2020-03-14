@@ -1,18 +1,22 @@
 <resources>
     <string name="app_name">Global Pharma</string>
     <string name="connexion">Connexion</string>
+    <string name="btn_commencer">Commencer</string>
+    <string name="btn_suivant">Suivant</string>
     <string name="registration">Inscription</string>
     <string name="name">Nom</string>
-    <string name="name_or_email">Nom ou adresse mail</string>
-    <string name="email">E-mail</string>
+    <string name="name_or_phone">Nom ou numéro de téléphone</string>
+    <string name="phone_register">Numéro de téléphone</string>
     <string name="password">Mot de passe</string>
     <string name="confirm_password">Confirmation du mot de passe</string>
-    <string name="Home">Accueil</string>
-    <string name="Location">Location</string>
-    <string name="Pills">Prise de médicament</string>
-    <string name="User">Profil</string>
-
+    <string name="remplir_correctement_champ">Veuillez remplir correctement les champs</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="hello_blank_fragment">Bonjour fragment vide</string>
+    <string name="password_not_matching">Mots de passe différents</string>
+    <string name="prise_medicament">Prise de médicaments</string>
+    <string name="tag_prise_medicament">Enregister vos différentes prises de médicaments dans le le but d\'être notifié à chaque prise</string>
+    <string name="geolocalisation">Géolocalisaton</string>
+    <string name="tag_geolocalisation">Effectuer une géolocalisation de pharmacie de garde la plus proche de votre emplacement"</string>
+    <string name="preoccupation">Préoccupation</string>
+    <string name="tag_preoccupation">Contacter une pharmacie partenaire pour tout préoccupation , effets indésirables lors d\'une prise de médicament</string>
 </resources>

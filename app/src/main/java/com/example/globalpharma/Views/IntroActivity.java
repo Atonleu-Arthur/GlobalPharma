@@ -64,12 +64,12 @@ public class IntroActivity extends AppCompatActivity {
         tabIndicator = findViewById(R.id.tab_indicator);
         btnAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.button_animation);
         tvSkip = findViewById(R.id.tv_skip);
-
+        btnNext.setText(R.string.btn_suivant);
 
         final List<ScreenItem> mList = new ArrayList<>();
-        mList.add(new ScreenItem(" Prise de médicaments ","Enregister vos différents prise de médicaments et ceux de votre dans le le but d'être notifier a chaque prise\n",R.drawable.capsule));
-        mList.add(new ScreenItem("Géolocalisation","Effectuer une géolocalisation de pharmacies de garde le plus proche de votre emplacement",R.drawable.localisation));
-        mList.add(new ScreenItem("Préoccupations","Contacter une pharmacie partenaire pour tout préoccupation , effet indésirables lors d'une prise de médicament",R.drawable.question));
+        mList.add(new ScreenItem(getString(R.string.prise_medicament),getString(R.string.tag_prise_medicament) + "\n",R.drawable.capsule));
+        mList.add(new ScreenItem(getString(R.string.geolocalisation),getString(R.string.tag_geolocalisation), R.drawable.localisation));
+        mList.add(new ScreenItem(getString(R.string.preoccupation),getString(R.string.tag_preoccupation),R.drawable.question));
 
         // setup viewpager
         screenPager =findViewById(R.id.screen_viewpager);
@@ -109,7 +109,7 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
-        // tablayout pour la suivi des photos parcourues
+        // tablayout pour le suivi des photos parcourues
 
 
         tabIndicator.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
@@ -138,7 +138,7 @@ public class IntroActivity extends AppCompatActivity {
 
 
 
-        // Boutton commencer dechet
+        // Boutton commencer
 
         btnGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override

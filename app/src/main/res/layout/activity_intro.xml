@@ -35,7 +35,7 @@
         android:layout_marginBottom="44dp"
         android:width="261.58dip"
         android:background="@drawable/radius"
-        android:text="Commencer"
+        android:text="@string/btn_commencer"
         android:textColor="#fff"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
