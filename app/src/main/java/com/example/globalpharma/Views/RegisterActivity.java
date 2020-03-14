@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                         boolean checkPhone = databaseHelper.checkPhoneNumber(phone); //check if phone number is correct
                         //Number is correct
                         if(checkPhone == true) {
-                            user = initUser(name, password, phone);
+                            user = new User(name, password, phone);
                             boolean insertion = databaseHelper.onInsert(user);
                             //insertion successful
                             if (insertion == true) {
@@ -105,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private User initUser(String name, String password, String phone){
-        User user = new User();
+        User user = new User(name, phone, password);
         user.setName(name);
         user.setPassword(password);
         user.setPhone(phone);

@@ -87,13 +87,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 user = cursor.getString(0);
-                if(user.equals(phonenumber)){
+                if(user.toString().equals(phonenumber)){
                     pass = cursor.getString(1);
                     break;
                 }
+                else pass = null;
             }while (cursor.moveToNext());
         }
         return pass;
+    }
+
+    public boolean tryToLogIn(String phone, String password){
+        db = this.getReadableDatabase();
+        String pass_found = " ";
+        Cursor cursor1 = db.rawQuery("SELECT phone_number FROM User", null);
+        if(cursor1.moveToFirst()){
+            do{
+                if(phone.equals(cursor1.getString(0))) {
+                    pass_found = searchPassword(phone);
+                    break;
+                }
+                else
+                    pass_found = null;
+            }while(cursor1.moveToNext());
+        }
+        if(pass_found.equals(password))
+            return  true;
+        else {
+            return false;
+        }
     }
 }
 

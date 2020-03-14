@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/txtName"
+        android:id="@+id/txtNameLogin"
         android:layout_width="358dp"
         android:layout_height="47dp"
         android:layout_marginTop="116dp"
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@id/btnRegistration" />
 
     <EditText
-        android:id="@+id/txtPassword"
+        android:id="@+id/txtPasswordLogin"
         android:layout_width="361dp"
         android:layout_height="47dp"
         android:layout_marginTop="32dp"
@@ -72,7 +72,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="@id/btnConnect"
-        app:layout_constraintTop_toBottomOf="@id/txtName" />
+        app:layout_constraintTop_toBottomOf="@id/txtNameLogin" />
 
     <Button
         android:id="@+id/btnSubmit2"
@@ -91,18 +91,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtPassword" />
+        app:layout_constraintTop_toBottomOf="@id/txtPasswordLogin" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/forgot_pass_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mot de passe oublié?"
-        app:layout_constraintBottom_toTopOf="@+id/btnSubmit2"
+        app:layout_constraintTop_toBottomOf="@+id/txtPasswordLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
