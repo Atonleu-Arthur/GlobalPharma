@@ -4,6 +4,7 @@
     <string name="connexion">Sign in</string>
     <string name="registration">Sign up</string>
     <string name="name">Name</string>
+    <string name="email">Email</string>
     <string name="name_or_phone">Name or phone number</string>
     <string name="phone_register">Phone number</string>
     <string name="password">Password</string>

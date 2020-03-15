@@ -15,10 +15,14 @@ import android.widget.Toast;
 import com.example.globalpharma.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.concurrent.TimeUnit;
 
 public class RegisterActivity extends AppCompatActivity {
     private Button btnconnect;
@@ -41,6 +45,23 @@ public class RegisterActivity extends AppCompatActivity {
 
         //initialisation de l'authentificateur
         mAuth = FirebaseAuth.getInstance();
+
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+
+            }
+
+            @Override
+            public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+            }
+        };
 
         //isLoggedIn();
 
@@ -153,5 +174,14 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Not connected", Toast.LENGTH_SHORT).show();
             //return false;
         }
+    }
+
+    private void setAuthWithPhoneNumber(String phoneNumber){
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,
+                60,
+                TimeUnit.SECONDS,
+                this,
+                mCallbacks);
     }
 }

@@ -71,7 +71,7 @@
         android:layout_marginTop="40dp"
         android:paddingLeft="10dp"
         android:background="@drawable/radiusblanc"
-        android:hint="@string/phone_register"
+        android:hint="@string/email"
         android:textColor="@color/textcolorgray"
         android:textColorHint="@color/textHintColor"
 
