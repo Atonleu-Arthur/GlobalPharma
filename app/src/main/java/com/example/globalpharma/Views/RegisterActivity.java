@@ -1,34 +1,34 @@
 package com.example.globalpharma.Views;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.SmsManager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.globalpharma.Model.DatabaseHelper;
-import com.example.globalpharma.Model.User;
 import com.example.globalpharma.R;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.Random;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthProvider;
 
 public class RegisterActivity extends AppCompatActivity {
-    protected static DatabaseHelper databaseHelper;
     private Button btnconnect;
     private Button mBtnSubmit;
     private TextView mTxtPhone;
     private TextView mTxtPassword;
     private TextView mTxtConfirm;
     private TextView mTxtName;
-    private Random random = new Random();
-    private int code;
-    User user;
-
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,50 +39,19 @@ public class RegisterActivity extends AppCompatActivity {
 
         initElements();
 
+        //initialisation de l'authentificateur
+        mAuth = FirebaseAuth.getInstance();
+
+        //isLoggedIn();
+
         mBtnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = mTxtName.getText().toString();
-                String password = mTxtPassword.getText().toString();
-                String confirmation = mTxtConfirm.getText().toString();
-                String phone = mTxtPhone.getText().toString();
-
-                //check if fields are empty
-                if((name.equals("")) || (password.equals("")) || (confirmation.equals("")) ||
-                        phone.equals(""))
-                    Toast.makeText(RegisterActivity.this, getString(R.string.remplir_correctement_champ), Toast.LENGTH_SHORT).show();
-
-                //fields not empty
-                else{
-                    //password and confirmation password are not matching
-                    if(!password.equals(confirmation))
-                        Toast.makeText(RegisterActivity.this, getString(R.string.password_not_matching), Toast.LENGTH_SHORT).show();
-
-                    else{
-                        boolean checkPhone = databaseHelper.checkPhoneNumber(phone); //check if phone number is correct
-                        //Number is correct
-                        if(checkPhone == true) {
-                            user = new User(name, password, phone);
-                            boolean insertion = databaseHelper.onInsert(user);
-                            //insertion successful
-                            if (insertion == true) {
-
-                                Toast.makeText(RegisterActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
-                            } else
-                                Toast.makeText(RegisterActivity.this, "Echec d'enregistrement", Toast.LENGTH_SHORT).show();
-                        }
-                        else //Number is not correct
-                            Toast.makeText(RegisterActivity.this, "Ohlala", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                /*code = random.nextInt((9999-1000)+1) + 1000;
-                SmsManager.getDefault().sendTextMessage(mTxtPhone.getText().toString(), null,
-                       "Code cde confirmation: " + code, null, null);*/
-
-
+                verifyFieldsState();
+                setAuthWithEmail();
             }
         });
+
 
         btnconnect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,25 +60,45 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
 
     }
 
-    private void initElements(){
-        btnconnect= (Button) findViewById(R.id.btnConnect);
+    private void initElements() {
+        btnconnect = (Button) findViewById(R.id.btnConnect);
         mBtnSubmit = findViewById(R.id.btnSubmit);
         mTxtPhone = findViewById(R.id.txtEmail);
         mTxtPassword = findViewById(R.id.txtPassword);
         mTxtConfirm = findViewById(R.id.txtConfirmPassword);
         mTxtName = findViewById(R.id.txtName);
-        databaseHelper = new DatabaseHelper(this);
     }
 
-    private User initUser(String name, String password, String phone){
-        User user = new User(name, phone, password);
-        user.setName(name);
-        user.setPassword(password);
-        user.setPhone(phone);
-        return user;
+    public void verifyFieldsState() {
+        if (TextUtils.isEmpty(mTxtPhone.getText().toString()))
+            mTxtPhone.setError(getString(R.string.error_txt));
+        if(TextUtils.isEmpty(mTxtName.getText().toString()))
+            mTxtName.setError(getString(R.string.error_txt));
+        if(TextUtils.isEmpty(mTxtPassword.getText().toString()))
+            mTxtPassword.setError(getString(R.string.error_txt));
+        else if(mTxtPassword.getText().toString().length() < 8)
+            mTxtPassword.setError(getString(R.string.error_password));
+        if(TextUtils.isEmpty(mTxtConfirm.getText().toString()))
+            mTxtConfirm.setError(getString(R.string.error_txt));
+        else if (!mTxtPassword.getText().toString().equals(mTxtConfirm.getText().toString()))
+            mTxtConfirm.setError(getString(R.string.error_txt));
+    }
+
+    private void getAllFieldsText(){
+        String name = mTxtName.getText().toString();
+        String email = mTxtPhone.getText().toString();
+        String password = mTxtPassword.getText().toString();
     }
 
 
@@ -120,5 +109,49 @@ public class RegisterActivity extends AppCompatActivity {
         mTxtName.setText(null);
     }
 
+    private void updateUI(FirebaseUser user) {
+        boolean isSignedIn = (user != null);
 
+        // Status text
+        if (isSignedIn == true) {
+            Toast.makeText(this, "Signed in", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //Add user to firebase
+    private void setAuthWithEmail(){
+        getAllFieldsText();
+        mAuth.createUserWithEmailAndPassword(mTxtPhone.getText().toString(), mTxtPassword.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                            Log.d("Registration", "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                        }
+                        else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("", "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    //Verify is user is already logged in
+    public void isLoggedIn(){
+        if(mAuth.getCurrentUser() != null){
+            Toast.makeText(this, "Already connected", Toast.LENGTH_SHORT).show();
+            //return true;
+        }
+        else{
+            Toast.makeText(this, "Not connected", Toast.LENGTH_SHORT).show();
+            //return false;
+        }
+    }
 }
