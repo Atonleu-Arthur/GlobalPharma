@@ -48,17 +48,17 @@ public class RegisterActivity extends AppCompatActivity {
                 String phone = mTxtPhone.getText().toString();
 
                 //check if fields are empty
-                if((name.equals("")) || (password.equals("")) || (confirmation.equals("")) ||
+                /**  if((name.equals("")) || (password.equals("")) || (confirmation.equals("")) ||
                         phone.equals(""))
-                    Toast.makeText(RegisterActivity.this, getString(R.string.remplir_correctement_champ), Toast.LENGTH_SHORT).show();
+                   Toast.makeText(RegisterActivity.this, getString(R.string.remplir_correctement_champ), Toast.LENGTH_SHORT).show();**/
 
                 //fields not empty
-                else{
+                /**  else{
                     //password and confirmation password are not matching
                     if(!password.equals(confirmation))
-                        Toast.makeText(RegisterActivity.this, getString(R.string.password_not_matching), Toast.LENGTH_SHORT).show();
+                       Toast.makeText(RegisterActivity.this, getString(R.string.password_not_matching), Toast.LENGTH_SHORT).show();**/
 
-                    else{
+                  /**  else{
                         boolean checkPhone = databaseHelper.checkPhoneNumber(phone); //check if phone number is correct
                         //Number is correct
                         if(checkPhone == true) {

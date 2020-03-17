@@ -5,17 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_container"
+    android:background="@color/beige"
     tools:context=".Views.Accueil">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="407dp"
-        android:layout_height="48dp"
+        android:layout_height="44dp"
         android:background="@drawable/radiusbottom"
+        android:layout_marginEnd="0dp"
+        android:layout_marginLeft="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu"
-        tools:ignore="MissingConstraints" />
+        app:itemIconTint="@drawable/nav_selector"
+        tools:ignore="MissingConstraints"
+        android:layout_marginRight="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

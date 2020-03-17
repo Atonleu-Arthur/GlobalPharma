@@ -8,4 +8,17 @@
     <string name="email">E-mail</string>
     <string name="password">Password</string>
     <string name="confirm_password">Password confirmation</string>
+    <string name="Home">Home</string>
+    <string name="Location">Location</string>
+    <string name="Pills">Prise </string>
+    <string name="User">Profil</string>
+    <string name="prise_medicament">Prise de médicament</string>
+    <string name="geolocalisation">Geolocalistion</string>
+    <string name="view">List view</string>
+    <string name="btn_commencer">Continue</string>
+    <string name="phone_register">Number</string>
+    <string name="name_or_phone">Name or phone</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

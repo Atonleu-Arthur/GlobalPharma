@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="" />
 
+    <item
+        android:id="@+id/pills"
+        android:icon="@drawable/ic_pills"
+        android:title="@string/Pills" />
+
+
+    <item
+        android:id="@+id/gps"
+        android:icon="@drawable/ic_gps"
+        android:title="@string/Location" />
+    <item
+        android:id="@+id/Tchat"
+        android:icon="@drawable/ic_speech_bubble"
+        android:title="@string/Pills" />
+    <item
+        android:id="@+id/user"
+        android:icon="@drawable/ic_user"
+        android:title="@string/User" />
 
 </menu>

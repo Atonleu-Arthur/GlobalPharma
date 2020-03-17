@@ -1,13 +1,12 @@
 package com.example.globalpharma.Views;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.content.ClipData;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.globalpharma.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -47,10 +46,9 @@ public class Accueil extends  AppCompatActivity implements BottomNavigationView.
             case R.id.gps:
                 fragment = new GpsFragment();
 
-                break;
+            break;
 
             case R.id.user:
-                fragment = new ProfilFragment();
                 break;
 
             case R.id.Tchat:

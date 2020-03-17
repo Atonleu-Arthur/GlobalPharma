@@ -4,26 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.GpsFragment">
+    >
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-    </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/myposition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="420dp"
+            android:clickable="true"
+            app:backgroundTint="@color/blanc"
+            app:srcCompat="@drawable/ic_my_location_black_24dp"
+            tools:ignore="VectorDrawableCompat" />
 
-    <TextView
-        android:layout_width="745dp"
-        android:layout_height="84dp"
-        android:gravity="center_horizontal"
-        android:text="@string/hello_blank_fragment"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/googlemap"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".Views.MapsFragment" />
+
+        <Button
+            android:id="@+id/btnPharmacie"
+            android:layout_width="191dp"
+            android:layout_height="45dp"
+            android:background="@drawable/radius"
+            android:text="Pharmaices à proximité"
+            android:textColor="@color/blanc"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="35dp"/>
+
+        <Button
+            android:layout_width="191dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="215dp"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/radiusbeige"
+            android:text="Pharmaices à proximité"
+            android:textColor="@color/textcolor"
+
+            />
+
+        <Button
+            android:layout_width="190dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="215dp"
+            android:textSize="12sp"
+            android:layout_marginTop="490dp"
+            android:background="@drawable/radiusvisualiserlaliste"
+
+            android:text="@string/view"
+            android:textColor="@color/textcolor"
+
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="309dp"
+            android:layout_height="125dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginLeft="34dp"
+            android:layout_marginTop="570dp"
+            android:layout_marginEnd="68dp"
+            android:layout_marginRight="68dp" >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
