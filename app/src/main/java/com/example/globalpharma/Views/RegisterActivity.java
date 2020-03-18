@@ -141,7 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    //Add user to firebase
+    //Add user to firebase by signing in
     private void setAuthWithEmail(){
         getAllFieldsText();
         mAuth.createUserWithEmailAndPassword(mTxtPhone.getText().toString(), mTxtPassword.getText().toString())
@@ -150,9 +150,12 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                            Log.d("Registration", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            if(user.isEmailVerified()){
+                                Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                Log.d("Registration", "createUserWithEmail:success");
+                            }
+
                         }
                         else {
                             // If sign in fails, display a message to the user.
@@ -183,5 +186,15 @@ public class RegisterActivity extends AppCompatActivity {
                 TimeUnit.SECONDS,
                 this,
                 mCallbacks);
+    }
+
+    //Log out the current account
+    private void logOut(FirebaseAuth mAuth){
+        mAuth.signOut();
+    }
+
+    private void deleteAccount(FirebaseAuth mAuth, FirebaseUser user){
+        user = mAuth.getCurrentUser();
+
     }
 }
