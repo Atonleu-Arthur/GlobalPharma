@@ -22,7 +22,7 @@
         android:title="@string/Pills" />
     <item
         android:id="@+id/user"
-        android:icon="@drawable/ic_user"
+        android:icon="@drawable/ic_users"
         android:title="@string/User" />
 
 </menu>

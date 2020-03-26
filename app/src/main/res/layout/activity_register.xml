@@ -122,7 +122,7 @@
         android:id="@+id/btnSubmit"
         android:layout_width="327dp"
         android:layout_height="50dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="36dp"
         android:width="252dip"
         android:background="@drawable/radius"
         android:text="@string/registration"

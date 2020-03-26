@@ -3,12 +3,23 @@ package com.example.globalpharma.Views;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.globalpharma.Model.ActuAdapter;
+import com.example.globalpharma.Model.Task;
+import com.example.globalpharma.Model.TaskAdapter;
+import com.example.globalpharma.Model.actuSante;
 import com.example.globalpharma.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +58,14 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+    RecyclerView ActuRecyclerview;
+    ActuAdapter mActuAdapter;
+    List<actuSante> mData;
+
+    RecyclerView TaskRecyclerview;
+    TaskAdapter mTaskAdapter;
+    List<Task> mDataTask;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +73,54 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        ActuRecyclerview = (RecyclerView)view.findViewById(R.id.actu_rv);
+        TaskRecyclerview = (RecyclerView)view.findViewById(R.id.tache_rv);
+
+        initRecyclerActu();
+        initRecyclerTask();
+
+
+        return view;
     }
+
+    public void initRecyclerActu(){
+        mData = new ArrayList<>();
+
+        mData.add(new actuSante("Diabete","un composé produit par la flore intestinale aurait des effets protecteurs",R.drawable.image_actu));
+        mData.add(new actuSante("Diabete","un composé produit par la flore intestinale aurait des effets protecteurs",R.drawable.image_actu));
+        mData.add(new actuSante("Diabete","un composé produit par la flore intestinale aurait des effets protecteurs",R.drawable.image_actu));
+        mData.add(new actuSante("Diabete","un composé produit par la flore intestinale aurait des effets protecteurs",R.drawable.image_actu));
+        mData.add(new actuSante("Diabete","un composé produit par la flore intestinale aurait des effets protecteurs",R.drawable.image_actu));
+        mData.add(new actuSante("Diabete","un composé produit par la flore intestinale aurait des effets protecteurs",R.drawable.image_actu));
+        mData.add(new actuSante("Diabete","un composé produit par la flore intestinale aurait des effets protecteurs",R.drawable.image_actu));
+
+        mActuAdapter = new ActuAdapter(getActivity(), mData);
+        ActuRecyclerview.setAdapter(mActuAdapter);
+        ActuRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), HORIZONTAL, false));
+
+    }
+
+    public void initRecyclerTask(){
+        mDataTask = new ArrayList<Task>();
+
+        mDataTask.add(new Task("Pharmacies de gardes","24h",R.drawable.ic_rx));
+        mDataTask.add(new Task("Post de medicaments","Deux réponses de post",R.drawable.ic_search_chat));
+        mDataTask.add(new Task("Pharmacies à proximité","jjfshkjhkjhfkhjf",R.drawable.ic_rx));
+
+        mTaskAdapter = new TaskAdapter(getActivity(), mDataTask);
+        TaskRecyclerview.setAdapter(mTaskAdapter);
+        TaskRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), HORIZONTAL, false));
+
+    }
+
 }
