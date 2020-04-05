@@ -49,11 +49,12 @@ public class Accueil extends  AppCompatActivity implements BottomNavigationView.
             break;
 
             case R.id.user:
+                fragment = new ProfilFragment();
                 break;
 
             case R.id.Tchat:
-                fragment = new ProfilFragment();
                 break;
+
         }
 
         return defaultFragment (fragment);

@@ -12,6 +12,7 @@
     <string name="Location">Location</string>
     <string name="Pills">Prise </string>
     <string name="User">Profil</string>
+    <string name="Tchat">Message</string>
     <string name="prise_medicament">Prise de médicament</string>
     <string name="geolocalisation">Geolocalistion</string>
     <string name="view">List view</string>
@@ -21,4 +22,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps_fragment">Map</string>
+
 </resources>

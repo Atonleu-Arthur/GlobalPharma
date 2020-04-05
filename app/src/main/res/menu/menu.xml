@@ -19,7 +19,7 @@
     <item
         android:id="@+id/Tchat"
         android:icon="@drawable/ic_speech_bubble"
-        android:title="@string/Pills" />
+        android:title="@string/Tchat" />
     <item
         android:id="@+id/user"
         android:icon="@drawable/ic_users"
