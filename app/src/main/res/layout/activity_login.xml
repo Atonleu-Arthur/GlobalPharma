@@ -7,102 +7,67 @@
     android:background="@color/backgroundActivity"
     tools:context=".Views.LoginActivity">
 
-    <Button
-        android:id="@+id/btnConnect"
-        android:layout_width="174dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="68dp"
-        android:background="@drawable/radius"
-        android:text="@string/connexion"
-        android:textColor="@color/white"
-        android:textSize="12dp"
-        app:layout_constraintEnd_toStartOf="@id/btnRegistration"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
-    <Button
-        android:id="@+id/btnRegistration"
-        android:layout_width="172dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="68dp"
-        android:background="@drawable/radiusblanc"
-        android:text="@string/registration"
-        android:textColor="@color/textcolorgray"
-        android:textSize="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnConnect"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-    <EditText
-        android:id="@+id/txtNameLogin"
-        android:layout_width="358dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="116dp"
-        android:paddingLeft="10dp"
-        android:background="@drawable/radiusblanc"
-        android:hint="@string/name_or_phone"
-        android:textColor="@color/textcolorgray"
-        android:textColorHint="@color/textHintColor"
-        android:textSize="12dp"
-        app:layout_constraintEnd_toEndOf="@id/btnRegistration"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@id/btnConnect"
-        app:layout_constraintTop_toBottomOf="@id/btnRegistration" />
+            <Button
+                android:id="@+id/btnConnect"
+                android:layout_width="174dp"
+                android:layout_height="37dp"
+                android:layout_marginTop="68dp"
+                android:background="@drawable/radius"
+                android:text="@string/connexion"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toStartOf="@id/btnRegistration"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/fragment_login"/>
 
-    <EditText
-        android:id="@+id/txtPasswordLogin"
-        android:layout_width="361dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="32dp"
-        android:paddingLeft="10dp"
-        android:background="@drawable/radiusblanc"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textColor="#757171"
-        android:textColorHint="@color/textHintColor"
-        android:textSize="12dp"
-        app:layout_constraintEnd_toEndOf="@id/btnRegistration"
-        app:layout_constraintHorizontal_bias="0.275"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@id/btnConnect"
-        app:layout_constraintTop_toBottomOf="@id/txtNameLogin" />
+            <Button
+                android:id="@+id/btnRegistration"
+                android:layout_width="172dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="68dp"
+                android:background="@drawable/radiusblanc"
+                android:text="@string/registration"
+                android:textColor="@color/textcolorgray"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnConnect"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/fragment_login" />
 
-    <Button
-        android:id="@+id/btnSubmit2"
-        android:layout_width="327dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="136dp"
-        android:layout_marginBottom="128dp"
-        android:width="252dip"
-        android:background="@drawable/radius"
-        android:text="@string/connexion"
-        android:textColor="#FFF9F9"
-        app:layout_constraintBottom_toBottomOf="parent"
+            <fragment
+                android:id="@+id/fragment_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnRegistration"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="15dp"
+                android:name="com.example.globalpharma.Views.LoginFragment"
+                />
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.357"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtPasswordLogin" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/forgot_pass_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mot de passe oublié?"
-        app:layout_constraintTop_toBottomOf="@+id/txtPasswordLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btnSubmit2" />
+
+
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

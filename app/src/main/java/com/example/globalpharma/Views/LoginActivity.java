@@ -3,6 +3,9 @@ package com.example.globalpharma.Views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,10 +21,14 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
     private Button btnRegisterActivity;
+    private Button btnLoginActivity;
     private Button btnLogIn;
     private EditText password_editText;
     private EditText phone_editText;
     private FirebaseAuth mLog;
+    private FragmentManager mFragmentManager;
+    private FragmentTransaction mFragmentTransaction;
+    private int result = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +43,36 @@ public class LoginActivity extends AppCompatActivity {
         final String identifier = phone_editText.getText().toString();
         final String password = password_editText.getText().toString();
 
+
         btnRegisterActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                startActivity(i);
+               finish();
+            }
+        });
+
+        btnLoginActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_register, new Fragment())
+                    .commit()
+            ;
             }
         });
 
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logInWithEmail();
+                boolean p = logInWithEmail();
+                if(p == true){
+                    Intent intent = new Intent(LoginActivity.this, Accueil.class);
+                    startActivity(intent);
+                    finish();
+            }
             }
         });
 
@@ -58,9 +83,16 @@ public class LoginActivity extends AppCompatActivity {
         phone_editText = findViewById(R.id.txtNameLogin);
         btnRegisterActivity =(Button) findViewById(R.id.btnRegistration);
         btnLogIn =(Button) findViewById(R.id.btnSubmit2);
+        btnLoginActivity = findViewById(R.id.btnConnect);
+
+        getFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_login, new android.app.Fragment())
+                .commit()
+        ;
     }
 
-    private void logInWithEmail(){
+    private boolean logInWithEmail(){
         mLog.signInWithEmailAndPassword(phone_editText.getText().toString(), password_editText.getText().toString()).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
                     @Override
@@ -70,10 +102,14 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         else{
                             Toast.makeText(LoginActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+                            result= 0;
                         }
                     }
                 }
         );
+
+        if(result == 0) return false;
+        else return true;
     }
 }
 

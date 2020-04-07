@@ -99,7 +99,7 @@ public class IntroActivity extends AppCompatActivity {
 
                     // TODO : show the GETSTARTED Button and hide the indicator and the next button
 
-                    loaddLastScreen();
+                    loadLastScreen();
 
 
                 }
@@ -118,7 +118,7 @@ public class IntroActivity extends AppCompatActivity {
 
                 if (tab.getPosition() == mList.size()-1) {
 
-                    loaddLastScreen();
+                    loadLastScreen();
 
                 }
 
@@ -186,7 +186,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     // Montre le boutton commncer et l'indicateur tablayout
-    private void loaddLastScreen() {
+    private void loadLastScreen() {
 
         btnNext.setVisibility(View.INVISIBLE);
         btnGetStarted.setVisibility(View.VISIBLE);

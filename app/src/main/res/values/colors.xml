@@ -19,5 +19,6 @@
     <color name="colorbuton">#1A8DFF</color>
     <color name="colornull"></color>
     <color name="textcolor">#545555</color>
+    <color name="greentextcolor">#17B241</color>
 
 </resources>

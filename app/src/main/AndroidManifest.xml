@@ -2,20 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.globalpharma">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_app_logo_foreground"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Views.Accueil"></activity>
+        <activity android:name=".Views.MedicationFormsActivity"></activity>
+        <activity android:name=".Views.NewMedicationActivity" />
+        <activity android:name=".Views.Accueil" />
         <activity android:name=".Views.IntroActivity" />
         <activity android:name=".Views.LoginActivity" />
-        <activity android:name=".Views.RegisterActivity"></activity>
+        <activity android:name=".Views.RegisterActivity" />
         <activity
             android:name=".Views.MainActivity"
             tools:ignore="DuplicateActivity">
@@ -25,7 +30,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".Model.SendSms"></receiver>
+        <receiver android:name=".Model.SendSms" />
+        <provider
+            android:authorities="${applicationId}.provider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                />
+        </provider>
     </application>
 
 </manifest>
