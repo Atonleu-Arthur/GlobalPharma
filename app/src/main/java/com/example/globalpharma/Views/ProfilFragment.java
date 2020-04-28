@@ -1,5 +1,6 @@
 package com.example.globalpharma.Views;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.globalpharma.R;
 
@@ -53,13 +55,31 @@ public class ProfilFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
+
         }
     }
+
+    Button Btn_modifier;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View v =  inflater.inflate(R.layout.fragment_profil, container, false);
+
+        Btn_modifier = (Button)v.findViewById(R.id.button_modifier);
+
+
+        Btn_modifier.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(i);
+
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profil, container, false);
+        return v;
     }
 }

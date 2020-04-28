@@ -8,33 +8,25 @@
     android:background="@color/backgroundActivity">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </LinearLayout>
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="174dp" />
+        app:layout_constraintGuide_begin="200dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintGuide_end="123dp" />
+        app:layout_constraintGuide_end="200dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="404dp"
-        android:layout_height="172dp"
+        android:layout_width="393dp"
+        android:layout_height="191dp"
         android:background="@color/vert"
         app:layout_constraintBottom_toTopOf="@+id/guideline_top"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,20 +85,22 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/button_deconnecter"
+        android:id="@+id/button_modifier"
         android:layout_width="248dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/radius"
         android:text="modifier son profil"
         android:textColor="@color/blanc"
-        app:layout_constraintBottom_toTopOf="@+id/button_modifier"
+        app:layout_constraintBottom_toTopOf="@id/button_deconnecter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_bottom"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/button_modifier"
+        android:id="@+id/button_deconnecter"
         android:layout_width="248dp"
         android:layout_height="48dp"
         android:layout_marginBottom="55dp"
@@ -115,18 +109,21 @@
         android:textColor="@color/blanc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_bottom"
+        app:layout_constraintVertical_bias="0.983" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="414dp"
-        android:layout_height="240dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_deconnecter"
+        android:id="@+id/constraintLayout4"
+        android:layout_width="380dp"
+        android:layout_height="241dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline_top"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.217">
 
         <ImageView
             android:id="@+id/icon_profile"
@@ -149,7 +146,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.145"
-            app:layout_constraintStart_toEndOf="@+id/icon_profile"
+            app:layout_constraintStart_toEndOf="@id/icon_profile"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -161,19 +158,19 @@
             android:text="stephane.kouam237@gmail.com"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.307"
-            app:layout_constraintStart_toEndOf="@+id/icon_profile"
-            app:layout_constraintTop_toBottomOf="@+id/textView1" />
+            app:layout_constraintStart_toEndOf="@id/icon_profile"
+            app:layout_constraintTop_toBottomOf="@id/textView1" />
 
 
         <View
-            android:layout_width="300dp"
+            android:layout_width="325dp"
             android:layout_height="1dp"
             android:layout_marginTop="12dp"
             android:background="#000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.285"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@id/textView2" />
 
 
         <LinearLayout
@@ -185,7 +182,7 @@
             android:paddingBottom="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
+            app:layout_constraintTop_toBottomOf="@id/textView2">
 
             <TextView
                 android:id="@+id/textView3"
@@ -274,10 +271,10 @@
 
         <View
             android:id="@+id/view"
-            android:layout_width="300dp"
+            android:layout_width="325dp"
             android:layout_height="1dp"
-            android:background="#000"
             android:layout_marginBottom="20dp"
+            android:background="#000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.285"
