@@ -82,7 +82,7 @@ public class GpsFragment extends Fragment implements OnMapReadyCallback,
     public GpsFragment() {
         // Required empty public constructor
     }
-
+// Modification
 
     public static GpsFragment newInstance(String param1, String param2) {
         GpsFragment fragment = new GpsFragment();
