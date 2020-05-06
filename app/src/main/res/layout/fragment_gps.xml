@@ -23,9 +23,7 @@
             app:srcCompat="@drawable/ic_my_location_black_24dp"
             tools:ignore="VectorDrawableCompat" />
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <fragment
             android:id="@+id/googlemap"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
@@ -36,11 +34,11 @@
             android:id="@+id/btnPharmacie"
             android:layout_width="191dp"
             android:layout_height="45dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="35dp"
             android:background="@drawable/radius"
             android:text="Pharmaices à proximité"
-            android:textColor="@color/blanc"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="35dp"/>
+            android:textColor="@color/blanc" />
 
         <Button
             android:layout_width="191dp"
@@ -65,20 +63,6 @@
             android:textColor="@color/textcolor"
 
             />
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="309dp"
-            android:layout_height="125dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="34dp"
-            android:layout_marginLeft="34dp"
-            android:layout_marginTop="570dp"
-            android:layout_marginEnd="68dp"
-            android:layout_marginRight="68dp" >
-
-        </androidx.recyclerview.widget.RecyclerView>
 
     </RelativeLayout>
 

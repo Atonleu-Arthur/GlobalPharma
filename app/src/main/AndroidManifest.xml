@@ -41,6 +41,7 @@
         <activity android:name=".Views.IntroActivity" />
         <activity android:name=".Views.LoginActivity" />
         <activity android:name=".Views.RegisterActivity" />
+        <activity android:name=".Views.Pharmacie_location"/>
         <activity
             android:name=".Views.MainActivity"
             tools:ignore="DuplicateActivity">

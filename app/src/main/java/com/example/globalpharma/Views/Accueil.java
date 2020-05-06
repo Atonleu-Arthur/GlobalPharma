@@ -39,7 +39,8 @@ public class Accueil extends  AppCompatActivity implements BottomNavigationView.
                 break;
 
             case R.id.pills:
-                fragment = new PillsFragment();
+               fragment = new PillsFragment();
+
 
                 break;
 
