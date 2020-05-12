@@ -17,11 +17,9 @@ import com.example.globalpharma.R;
 import java.util.List;
 
 public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
-    Context mContext;
     List<Medication> mMedications;
 
-    public MedicationAdapter(Context context, List<Medication> medications) {
-        mContext = context;
+    public MedicationAdapter(List<Medication> medications) {
         mMedications = medications;
     }
 
@@ -29,7 +27,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
     @Override
     public MedicationAdapter.MedicationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layout;
-        layout = LayoutInflater.from(mContext).inflate(R.layout.medication_item, parent, false);
+        layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.medication_item, parent, false);
         return new MedicationViewHolder(layout);
     }
 

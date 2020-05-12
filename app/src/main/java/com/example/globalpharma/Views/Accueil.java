@@ -17,10 +17,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.globalpharma.Model.HourItem;
 import com.example.globalpharma.Model.Medication;
+import com.example.globalpharma.Model.MedicationPerDay;
+import com.example.globalpharma.Model.MedicationPerDayAdapter;
 import com.example.globalpharma.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +36,13 @@ import static android.app.Notification.EXTRA_NOTIFICATION_ID;
 
 public class Accueil extends AppCompatActivity {
 
-    RecyclerView mRecyclerView;
-    MedicationAdapter mAdapter;
-    List<Medication> mMedicationList;
-    androidx.fragment.app.Fragment fragmentMedication;
-    Button mButtonAddMedication;
+    private RecyclerView mRecyclerViewMedications;
+    private TextView mTextView;
+    private ImageView mButtonAddMedication;
+    private MedicationPerDayAdapter mAdapter;
+    private List<MedicationPerDay> mMedicationsPerDayList;
+    private List<Medication> mMedicationList;
+    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,40 +53,98 @@ public class Accueil extends AppCompatActivity {
 
         initActivity();
 
-        mRecyclerView = findViewById(R.id.rv_medication);
+        initRecyclerViewMedications();
+
+        setNewMedications();
+
+        passToNewMedicationActivity();
+
+    }
+
+    public void initActivity() {
+        //Elements
+        mButtonAddMedication = findViewById(R.id.btn_add_medication);
+        mTextView = findViewById(R.id.text_my_treatments);
+        mRecyclerViewMedications = findViewById(R.id.rv_medication);
+
+        //Header
+        /*getFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_header_taking_medication, new Fragment())
+                .commit()
+        ;
+
+        */
+        //Liste des prises
+        getFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_medication, new Fragment())
+                .commit()
+        ;
+
+    }
+
+    public String getNewMedications(){
+        Intent intent = getIntent();
+        if(intent.hasExtra("medications List")){
+            return intent.getStringExtra("medications List");
+        }
+        else
+            return null;
+    }
+
+    public void setNewMedications(){
+        if(getNewMedications() != null){
+            Gson gson = new Gson();
+            Type medicationListType = new TypeToken<List<Medication>>(){}.getType();
+            List<Medication> medications = gson.fromJson(getNewMedications(), medicationListType);
+            for (Medication medication :
+                    medications) {
+                mMedicationList.add(medication);
+            }
+            mAdapter = new MedicationPerDayAdapter(mMedicationsPerDayList, Accueil.this);
+            mRecyclerViewMedications.setAdapter(mAdapter);
+        }
+    }
+
+    private void initRecyclerViewMedications() {
+        mMedicationsPerDayList = new ArrayList<>();
         mMedicationList = new ArrayList<>();
 
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
-        mMedicationList.add(new Medication("Doliprane", "Tete", "Comprimé", "2 comprimés", "12h00", null, "03 jours restants",
-                R.mipmap.ic_edit_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
 
-        mAdapter = new MedicationAdapter(this, mMedicationList);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
 
+        mAdapter = new MedicationPerDayAdapter(mMedicationsPerDayList, Accueil.this);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerViewMedications.setAdapter(mAdapter);
+        mRecyclerViewMedications.setLayoutManager(mLinearLayoutManager);
+    }
+
+    private void passToNewMedicationActivity() {
         mButtonAddMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,28 +152,6 @@ public class Accueil extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-    }
-
-    public void initActivity() {
-        //Elements
-        mButtonAddMedication = findViewById(R.id.btn_add_medication);
-
-        //Header
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_header_taking_medication, new Fragment())
-                .commit()
-        ;
-
-
-        //Liste des prises
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_medications, new Fragment())
-                .commit()
-        ;
-
     }
 
     public void notify(String title, String message){

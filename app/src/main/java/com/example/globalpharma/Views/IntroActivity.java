@@ -46,7 +46,7 @@ public class IntroActivity extends AppCompatActivity {
 
         if (restorePrefData()) {
 
-            Intent mainActivity = new Intent(getApplicationContext(),LoginActivity.class );
+            Intent mainActivity = new Intent(getApplicationContext(),RegisterActivity.class );
             startActivity(mainActivity);
             finish();
 
@@ -144,7 +144,7 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(IntroActivity.this,LoginActivity.class);
+                Intent i = new Intent(IntroActivity.this, Accueil.class);
                 startActivity(i);
 
 
@@ -165,13 +165,9 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean restorePrefData() {
-
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
-        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend",false);
+        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpened",false);
         return  isIntroActivityOpnendBefore;
-
-
 
     }
 
@@ -179,7 +175,7 @@ public class IntroActivity extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("isIntroOpnend",true);
+        editor.putBoolean("isIntroOpened",true);
         editor.commit();
 
 
@@ -187,7 +183,6 @@ public class IntroActivity extends AppCompatActivity {
 
     // Montre le boutton commncer et l'indicateur tablayout
     private void loadLastScreen() {
-
         btnNext.setVisibility(View.INVISIBLE);
         btnGetStarted.setVisibility(View.VISIBLE);
         tvSkip.setVisibility(View.INVISIBLE);
@@ -195,8 +190,5 @@ public class IntroActivity extends AppCompatActivity {
         // TODO : ADD an animation the getstarted button
         // setup animation
         btnGetStarted.setAnimation(btnAnim);
-
-
-
     }
 }

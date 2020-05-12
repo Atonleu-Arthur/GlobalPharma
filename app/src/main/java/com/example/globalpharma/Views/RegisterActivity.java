@@ -15,11 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.globalpharma.Model.Provider;
+import com.example.globalpharma.Model.User;
 import com.example.globalpharma.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,11 +32,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import javax.crypto.SecretKeyFactory;
 
 public class RegisterActivity extends AppCompatActivity {
     private Button btnconnect;
@@ -42,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView mTxtPassword;
     private TextView mTxtConfirm;
     private TextView mTxtName;
-    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private FirebaseFirestore mDatabase;
@@ -56,57 +66,12 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         getSupportActionBar().hide();
 
-        initElements();
+        initActivity();
 
-        mProvider = new Provider();
+        passToLoginInterface();
 
-        mDatabase = FirebaseFirestore.getInstance();
+        registerAndStartApplication();
 
-        //Database initialization
-        database = FirebaseDatabase.getInstance();
-
-        mRandom = new Random();
-
-        //initialisation de l'authentificateur
-        mAuth = FirebaseAuth.getInstance();
-
-
-
-
-        /*startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(mProvider.providers)
-                        .build(),
-                1
-                );*/
-
-        //Click on register button
-        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verifyFieldsState();
-                setAuthWithEmail();
-                HashMap<String, Object> user = new HashMap<>();
-                user.put("user_id", UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
-                user.put("name", mTxtName.getText().toString());
-                user.put("email", mTxtPhone.getText().toString());
-                user.put("password", mTxtPassword.getText().toString());
-                mDatabase.collection("Users").add(user);
-
-                //setAuthWithPhoneNumber(mTxtPhone.getText().toString());
-                //addUser(mTxtName.getText().toString(), mTxtPhone.getText().toString(), "Male", null, mTxtPassword.getText().toString() );
-            }
-        });
-
-        //Pass to connexion interface
-        btnconnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(i);
-            }
-        });
     }
 
     @Override
@@ -114,12 +79,11 @@ public class RegisterActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
 
     }
 
     //Initializing graphics elements
-    private void initElements() {
+    private void initActivity() {
         btnconnect = (Button) findViewById(R.id.btnConnect);
         mBtnSubmit = findViewById(R.id.btnSubmit);
         mTxtPhone = findViewById(R.id.txtEmail);
@@ -132,6 +96,46 @@ public class RegisterActivity extends AppCompatActivity {
                 .add(R.id.fragment_register, new Fragment())
                 .commit()
         ;
+
+        mProvider = new Provider();
+
+        mDatabase = FirebaseFirestore.getInstance();
+
+        //Database initialization
+        database = FirebaseDatabase.getInstance();
+
+        mRandom = new Random();
+
+        //initialisation de l'authentificateur
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    public void passToLoginInterface(){
+        //Pass to connexion interface
+        btnconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    public void registerAndStartApplication(){
+        //Click on register button
+        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifyFieldsState();
+
+                setAuthWithEmail();
+
+                emptyInputEditText();
+
+                //setAuthWithPhoneNumber(mTxtPhone.getText().toString());
+                //addUser(mTxtName.getText().toString(), mTxtPhone.getText().toString(), "Male", null, mTxtPassword.getText().toString() );
+            }
+        });
     }
 
     //Verifying if fields are completely filled
@@ -169,13 +173,12 @@ public class RegisterActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if(user.isEmailVerified()){
                                 Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                Log.d("Registration", "createUserWithEmail:success");
+                                addUserToDatabase(new User(mTxtPhone.getText().toString(), mTxtPassword.getText().toString()));
                             }
 
                         }
                         else {
                             // If sign in fails, display a message to the user.
-                            Log.w("", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -219,21 +222,27 @@ public class RegisterActivity extends AppCompatActivity {
                 mCallbacks);
     }
 
+    private void sendCodeSms(String mPhoneNumber, int code){
+        code = mRandom.nextInt((999999-100000)+1)+1000000;
+        //PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.get
+    }
+
     //Verify is user is already logged in
-    public void isLoggedIn(){
+    public boolean isLoggedIn(){
         if(mAuth.getCurrentUser() != null){
             Toast.makeText(this, "Already connected", Toast.LENGTH_SHORT).show();
-            //return true;
+            return true;
         }
         else{
             Toast.makeText(this, "Not connected", Toast.LENGTH_SHORT).show();
-            //return false;
+            return false;
         }
     }
 
     //Log out the current account
     private void logOut(FirebaseAuth mAuth){
-        mAuth.signOut();
+        if(mAuth.getCurrentUser() != null)
+            mAuth.signOut();
     }
 
     //Unsuscribe the application
@@ -242,21 +251,25 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void addUserToDatabase(String name, @Nullable String email, @Nullable String sex,
-                         @Nullable String phoneNumber, String password){
+    private void addUserToDatabase(User userAdded){
         HashMap<String, Object> user = new HashMap<>();
         user.put("user_id", UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
-        user.put("name", name);
-        user.put("email", email);
-        user.put("password", password);
-        user.put("phone_number", phoneNumber);
-        user.put("sex", sex );
-        user.put("birth_date", Date.valueOf("09/10/2000"));
-        mDatabase.collection("Users").add(user);
+        user.put("name", userAdded.getName());
+        user.put("email", userAdded.getPhone());
+        user.put("password", userAdded.getPassword());
     }
 
-    private void sendCodeSms(String mPhoneNumber, int code){
-        code = mRandom.nextInt((999999-100000)+1)+1000000;
-        //PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.get
+    public void hashPasswordToMD5(String password){
+        SecretKeyFactory secretKeyFactory;
+        MessageDigest hash = null;
+        byte[] byteChaine = password.getBytes(StandardCharsets.UTF_8);
+        try {
+            hash = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        hash.update(byteChaine);
     }
 }
+
+

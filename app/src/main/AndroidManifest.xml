@@ -6,16 +6,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".Model.App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_app_logo_foreground"
+        android:icon="@mipmap/ic_app_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Views.MedicationFormsActivity"></activity>
+        <activity android:name=".Views.HoursActivity"></activity>
+        <activity android:name=".Views.MedicationFormsActivity" />
         <activity android:name=".Views.NewMedicationActivity" />
         <activity android:name=".Views.Accueil" />
         <activity android:name=".Views.IntroActivity" />
@@ -30,17 +34,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".Model.SendSms" />
+
         <provider
-            android:authorities="${applicationId}.provider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"
-                />
+                android:resource="@xml/provider_paths" />
         </provider>
+
+        <service
+            android:name=".Model.NotificationJobService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <provider
+            android:authorities="com.example.globalpharma"
+            android:name=".Model.AlarmProvider"/>
+
+        <service android:name=".Model.AlarmService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

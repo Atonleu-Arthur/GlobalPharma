@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/item_before_eating" android:title="@string/text_before_eating"/>
+    <item android:id="@+id/item_while_eating" android:title="@string/text_while_eating"/>
+    <item android:id="@+id/item_after_eating" android:title="@string/text_after_eating"/>
+    <item android:id="@+id/item_out_of_eating" android:title="@string/text_out_of_eating"/>
+    <item android:id="@+id/item_whatever" android:title="@string/text_whatever"/>
+</menu>

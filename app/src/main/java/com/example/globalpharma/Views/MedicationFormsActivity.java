@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -57,6 +58,17 @@ public class MedicationFormsActivity extends AppCompatActivity  {
         mMedicationFormAdapter = new MedicationFormAdapter(mMedicationForms, this);
         mRecyclerView.setAdapter(mMedicationFormAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mMedicationFormAdapter.setOnItemClickListener(new MedicationFormAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+               String form = mMedicationForms.get(position).getFormName();
+                Intent intent = new Intent(MedicationFormsActivity.this, NewMedicationActivity.class);
+                intent.putExtra("mTxtMedicationForm", form);
+                MedicationFormsActivity.this.startActivity(intent);
+                finish();
+            }
+        });
 
     }
 
