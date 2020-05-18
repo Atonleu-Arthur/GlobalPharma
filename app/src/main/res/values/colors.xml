@@ -18,6 +18,8 @@
     <color name="blanc">#FFFFFF</color>
     <color name="colorbuton">#1A8DFF</color>
     <color name="colornull"></color>
+    <color name="green">@color/vert</color>
+
     <color name="textcolor">#545555</color>
     <color name="ItemColor">#B0B1B0</color>
 
