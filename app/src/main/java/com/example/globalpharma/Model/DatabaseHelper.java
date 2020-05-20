@@ -1,4 +1,4 @@
-package com.example.globalpharma.Model;
+/*package com.example.globalpharma.Model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -116,3 +116,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 }
 
 
+*/

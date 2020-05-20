@@ -45,7 +45,7 @@ public class Accueil extends  AppCompatActivity implements BottomNavigationView.
                 break;
 
             case R.id.gps:
-                fragment = new GpsFragment();
+              /*  fragment = new GpsFragment();*/
 
             break;
 

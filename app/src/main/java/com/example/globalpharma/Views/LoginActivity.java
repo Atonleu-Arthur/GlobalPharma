@@ -1,117 +1,172 @@
 package com.example.globalpharma.Views;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.globalpharma.Model.User;
 import com.example.globalpharma.R;
+import com.example.globalpharma.util.UserClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
-public class LoginActivity extends AppCompatActivity {
-    private Button btnRegisterActivity;
-    private Button btnLoginActivity;
-    private Button btnLogIn;
-    private EditText password_editText;
-    private EditText phone_editText;
-    private FirebaseAuth mLog;
-    private FragmentManager mFragmentManager;
-    private FragmentTransaction mFragmentTransaction;
-    private int result = 1;
+import static android.text.TextUtils.isEmpty;
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "LoginActivity";
+
+    //Firebase
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    // widgets
+    private EditText mEmail, mPassword;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
+        mEmail = findViewById(R.id.email);
+        mPassword = findViewById(R.id.password);
+        mProgressBar = findViewById(R.id.progressBar);
+        setupFirebaseAuth();
+        findViewById(R.id.email_sign_in_button).setOnClickListener(this);
+        findViewById(R.id.link_register).setOnClickListener(this);
 
-        iniElements();
-
-        passToRegisterActivity();
-
-        logAndStartApplication();
-
+        hideSoftKeyboard();
+    }
+    private void showDialog(){
+        mProgressBar.setVisibility(View.VISIBLE);
 
     }
 
-    private void iniElements(){
-        password_editText = findViewById(R.id.txtPasswordLogin);
-        phone_editText = findViewById(R.id.txtNameLogin);
-        btnRegisterActivity =(Button) findViewById(R.id.btnRegistration);
-        btnLogIn =(Button) findViewById(R.id.btnSubmit2);
-        btnLoginActivity = findViewById(R.id.btnConnect);
-       /* mLog = FirebaseAuth.getInstance();*/
+    private void hideDialog(){
+        if(mProgressBar.getVisibility() == View.VISIBLE){
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+    private void hideSoftKeyboard(){
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: started.");
 
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_login, new android.app.Fragment())
-                .commit()
-        ;
-
-       /* btnLoginActivity.setOnClickListener(new View.OnClickListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View v) {
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_register, new Fragment())
-                .commit()
-                ;
-            }
-        });*/
-    }
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
-    private void passToRegisterActivity() {
-        btnRegisterActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-    }
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                            .setTimestampsInSnapshotsEnabled(true)
+                            .build();
+                    db.setFirestoreSettings(settings);
 
-    private boolean logInWithEmail(){
-        mLog.signInWithEmailAndPassword(phone_editText.getText().toString(), password_editText.getText().toString()).addOnCompleteListener(
-                new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    DocumentReference userRef = db.collection("Users")
+                            .document(user.getUid());
+
+                    userRef.get().addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onComplete: successfully set the user client.");
+                            User user1 = task.getResult().toObject(User.class);
+                            UserClient.setUser(user1);
                         }
-                        else{
-                            Toast.makeText(LoginActivity.this, "Failure", Toast.LENGTH_SHORT).show();
-                            result = 0;
-                        }
-                    }
-                }
-        );
+                    });
 
-        if(result == 0) return false;
-        else return true;
-    }
-
-    private void logAndStartApplication() {
-        btnLogIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean p = logInWithEmail();
-                if(p == true){
                     Intent intent = new Intent(LoginActivity.this, Accueil.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
+                // ...
             }
-        });
+        };
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseApp.initializeApp(this);
+        FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        FirebaseApp.initializeApp(this);
+
+        if (mAuthListener != null) {
+            FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
+        }
+    }
+    private void signIn(){
+        //check if the fields are filled out
+        if(!isEmpty(mEmail.getText().toString())
+                && !isEmpty(mPassword.getText().toString())){
+            Log.d(TAG, "onClick: attempting to authenticate.");
+
+            showDialog();
+            FirebaseApp.initializeApp(this);
+
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(mEmail.getText().toString(),
+                    mPassword.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            hideDialog();
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(LoginActivity.this, "Echec de connexion ", Toast.LENGTH_SHORT).show();
+                    hideDialog();
+                }
+            });
+        }else{
+            Toast.makeText(LoginActivity.this, "Remplisser tous les champs", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.link_register:{
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.email_sign_in_button:{
+                signIn();
+                break;
+            }
+        }
     }
 }
+

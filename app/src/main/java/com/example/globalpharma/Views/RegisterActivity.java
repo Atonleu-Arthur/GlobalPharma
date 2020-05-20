@@ -1,33 +1,37 @@
 package com.example.globalpharma.Views;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
-import com.example.globalpharma.Model.DatabaseHelper;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.globalpharma.Model.User;
 import com.example.globalpharma.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
-import java.util.Random;
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-public class RegisterActivity extends AppCompatActivity {
-    protected static DatabaseHelper databaseHelper;
-    private Button btnconnect;
-    private Button mBtnSubmit;
-    private TextView mTxtPhone;
-    private TextView mTxtPassword;
-    private TextView mTxtConfirm;
-    private TextView mTxtName;
-    private Random random = new Random();
-    private int code;
-    User user;
+    private static final String TAG = "RegisterActivity";
+
+    //widgets
+    private EditText mEmail, mPassword, mConfirmPassword;
+    private ProgressBar mProgressBar;
+
+    //vars
+    private FirebaseFirestore mDb;
 
 
     @Override
@@ -37,88 +41,94 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         getSupportActionBar().hide();
 
-        initElements();
+        mEmail = (EditText) findViewById(R.id.input_email);
+        mPassword = (EditText) findViewById(R.id.input_password);
+        mConfirmPassword = (EditText) findViewById(R.id.input_confirm_password);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = mTxtName.getText().toString();
-                String password = mTxtPassword.getText().toString();
-                String confirmation = mTxtConfirm.getText().toString();
-                String phone = mTxtPhone.getText().toString();
+        findViewById(R.id.btn_register).setOnClickListener(this);
 
-                //check if fields are empty
-                /**  if((name.equals("")) || (password.equals("")) || (confirmation.equals("")) ||
-                        phone.equals(""))
-                   Toast.makeText(RegisterActivity.this, getString(R.string.remplir_correctement_champ), Toast.LENGTH_SHORT).show();**/
+        mDb = FirebaseFirestore.getInstance();
 
-                //fields not empty
-                /**  else{
-                    //password and confirmation password are not matching
-                    if(!password.equals(confirmation))
-                       Toast.makeText(RegisterActivity.this, getString(R.string.password_not_matching), Toast.LENGTH_SHORT).show();**/
+        hideSoftKeyboard();
 
-                  /**  else{
-                        boolean checkPhone = databaseHelper.checkPhoneNumber(phone); //check if phone number is correct
-                        //Number is correct
-                        if(checkPhone == true) {
-                            user = new User(name, password, phone);
-                            boolean insertion = databaseHelper.onInsert(user);
-                            //insertion successful
-                            if (insertion == true) {
 
-                                Toast.makeText(RegisterActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
-                            } else
-                                Toast.makeText(RegisterActivity.this, "Echec d'enregistrement", Toast.LENGTH_SHORT).show();
+    }
+    private void hideSoftKeyboard(){
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+    public void registerNewEmail(final String email, String password){
+
+        showDialog();
+
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                        if (task.isSuccessful()){
+                            Log.d(TAG, "onComplete: AuthState: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                            //insert some default data
+                            User user = new User();
+                            user.setEmail(email);
+                            user.setUsername(email.substring(0, email.indexOf("@")));
+                            user.setUser_id(FirebaseAuth.getInstance().getUid());
+
+                            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                                    .setTimestampsInSnapshotsEnabled(true)
+                                    .build();
+                            mDb.setFirestoreSettings(settings);
+
+                            DocumentReference newUserRef = mDb
+                                    .collection("Users")
+                                    .document(FirebaseAuth.getInstance().getUid());
+
+                            newUserRef.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    hideDialog();
+
+                                    if(task.isSuccessful()){
+                                        redirectLoginScreen();
+                                    }else{
+                                        View parentLayout = findViewById(android.R.id.content);
+                                        Snackbar.make(parentLayout, "Something went wrong.", Snackbar.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
                         }
-                        else //Number is not correct
-                            Toast.makeText(RegisterActivity.this, "Ohlala", Toast.LENGTH_SHORT).show();
+                        else {
+                            View parentLayout = findViewById(android.R.id.content);
+                            Snackbar.make(parentLayout, "Something went wrong.", Snackbar.LENGTH_SHORT).show();
+                            hideDialog();
+                        }
+
+                        // ...
                     }
-                }
-
-                /*code = random.nextInt((9999-1000)+1) + 1000;
-                SmsManager.getDefault().sendTextMessage(mTxtPhone.getText().toString(), null,
-                       "Code cde confirmation: " + code, null, null);*/
-
-
-            }
-        });
-
-        btnconnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
+                });
+    }
+    private void hideDialog(){
+        if(mProgressBar.getVisibility() == View.VISIBLE){
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
-    private void initElements(){
-        btnconnect= (Button) findViewById(R.id.btnConnect);
-        mBtnSubmit = findViewById(R.id.btnSubmit);
-        mTxtPhone = findViewById(R.id.txtEmail);
-        mTxtPassword = findViewById(R.id.txtPassword);
-        mTxtConfirm = findViewById(R.id.txtConfirmPassword);
-        mTxtName = findViewById(R.id.txtName);
-        databaseHelper = new DatabaseHelper(this);
+    private void showDialog(){
+        mProgressBar.setVisibility(View.VISIBLE);
+
     }
+    private void redirectLoginScreen(){
+        Log.d(TAG, "redirectLoginScreen: redirecting to login screen.");
 
-    private User initUser(String name, String password, String phone){
-        User user = new User(name, phone, password);
-        user.setName(name);
-        user.setPassword(password);
-        user.setPhone(phone);
-        return user;
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
+    @Override
+    public void onClick(View v) {
 
-
-    private void emptyInputEditText() {
-        mTxtPhone.setText(null);
-        mTxtConfirm.setText(null);
-        mTxtPassword.setText(null);
-        mTxtName.setText(null);
     }
-
-
 }

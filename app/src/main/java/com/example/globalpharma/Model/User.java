@@ -1,43 +1,110 @@
 package com.example.globalpharma.Model;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private int id;
-    private String name;
-    private String phone;
-    private String password;
+public class User implements Parcelable
+{
 
+    private String email;
+    private String user_id;
+    private String username;
+    private String avatar;
+    private  String phone;
 
-    public User(String name , String phone, String password){
-        this.name=name;
+    public User(String email, String user_id, String username, String avatar) {
+        this.email = email;
+        this.user_id = user_id;
+        this.username = username;
+        this.avatar = avatar;
+    }
+    public User(String email, String user_id, String username, String avatar,String phone) {
+        this.email = email;
+        this.user_id = user_id;
+        this.username = username;
+        this.avatar = avatar;
         this.phone=phone;
-        this.password=password;
     }
-    public String getPhone() { return phone; }
+    public User() {
 
-    public void setPhone(String phone) { this.phone = phone; }
-
-    public int getId() {
-        return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    protected User(Parcel in) {
+        email = in.readString();
+        user_id = in.readString();
+        username = in.readString();
+        avatar = in.readString();
     }
 
-    public String getName() {
-        return name;
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
-    public String getPassword() {
-        return password;
+    public static Creator<User> getCREATOR() {
+        return CREATOR;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", username='" + username + '\'' +
+                ", avatar='" + avatar + '\'' +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(user_id);
+        dest.writeString(username);
+        dest.writeString(avatar);
     }
 }
+
