@@ -18,7 +18,8 @@
     <string name="btn_commencer">Continue</string>
     <string name="phone_register">Number</string>
     <string name="name_or_phone">Name or phone</string>
-
+    <dimen name="custom_marker_image" >50dp</dimen>
+    <dimen name="custom_marker_padding">2dp</dimen>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

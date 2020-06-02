@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="vert">#0FC781</color>
+    <color name="textcolorgray">#8D8D8D</color>
+    <color name="white">#FFFFFF</color>
+    <color name="backgroundActivity">#F4F5FB</color>
+    <color name="vertaccent">#0FC781</color>
+    <color name="textHintColor">#969996</color>
+    <color name="vertsombre">#BEEADF</color>
+    <color name="gradient_start_color">#4c84ff</color>
+    <color name="colorRed">#EC113D</color>
+    <color name="beige">#ECEEFA</color>
+    <color name="noir">#FFFFFF</color>
+    <color name="panelcolor">#333333</color>
+    <color name="blanc">#FFFFFF</color>
+    <color name="colorbuton">#1A8DFF</color>
+    <color name="colornull"></color>
+    <color name="textcolor">#545555</color>
+    <color name="ItemColor">#B0B1B0</color>
+</resources>

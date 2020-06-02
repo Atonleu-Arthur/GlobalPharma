@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="232dp" />
+        app:layout_constraintGuide_begin="499dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_status"
@@ -58,10 +58,10 @@
         android:background="@drawable/radiusblanc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constraintLayout3"
-        app:layout_constraintVertical_bias="0.2">
+        app:layout_constraintVertical_bias="0.237">
 
         <ImageView
             android:id="@+id/imageView3"
@@ -251,7 +251,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_actu"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -284,7 +285,8 @@
             app:layout_constraintHorizontal_bias="0.432"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            tools:listitem="@layout/item_tache"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

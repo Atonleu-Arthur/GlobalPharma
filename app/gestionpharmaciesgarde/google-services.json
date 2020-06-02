@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "413141894495",
+    "firebase_url": "https://global-pharma-270023.firebaseio.com",
+    "project_id": "global-pharma-270023",
+    "storage_bucket": "global-pharma-270023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413141894495:android:c9bd4950e795cd7007e2ea",
+        "android_client_info": {
+          "package_name": "com.example.gestionpharmaciesgarde"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413141894495-mhmrb7v2i4ibuggpb4u5qp7avaulcqgf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLQDJM_XqfunyqA8Izz-qa1Vj2kGJicek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413141894495-mhmrb7v2i4ibuggpb4u5qp7avaulcqgf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413141894495:android:49a77ebfeb23a1d507e2ea",
+        "android_client_info": {
+          "package_name": "com.example.globalpharma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413141894495-919k4gu5tsprbs1g8src783bdd4ncsv5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.globalpharma",
+            "certificate_hash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        },
+        {
+          "client_id": "413141894495-mhmrb7v2i4ibuggpb4u5qp7avaulcqgf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLQDJM_XqfunyqA8Izz-qa1Vj2kGJicek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413141894495-mhmrb7v2i4ibuggpb4u5qp7avaulcqgf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

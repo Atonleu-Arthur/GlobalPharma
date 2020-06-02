@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beige"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btnvaliderregis"
+        android:layout_width="317dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="228dp"
+        android:background="@drawable/radius"
+        android:text="Valider"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="DuplicateIds" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="260dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="108dp"
+        android:text="Veillez choisir une ville"
+        android:textAlignment="center"
+        android:textColor="@color/textcolor"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.463"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <Spinner
+        android:id="@+id/ListeVille"
+        android:layout_width="248dp"
+        android:layout_height="53dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnvaliderregis"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        app:layout_constraintVertical_bias="0.306" />
+
+    <EditText
+        android:id="@+id/testarea_AddVille"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="tax"
+        app:layout_constraintBottom_toTopOf="@+id/btnvaliderregis"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.449"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ListeVille"
+        app:layout_constraintVertical_bias="0.466" />
+
+    <ImageButton
+        android:id="@+id/btn_img_Valid"
+        android:layout_width="73dp"
+        android:layout_height="47dp"
+        android:background="@color/beige"
+        app:layout_constraintBottom_toTopOf="@+id/btnvaliderregis"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.777"
+        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/ListeVille"
+        app:srcCompat="@drawable/icons8_checkmark_26px" />
+</androidx.constraintlayout.widget.ConstraintLayout>

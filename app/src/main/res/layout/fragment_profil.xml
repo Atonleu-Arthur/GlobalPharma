@@ -92,7 +92,7 @@
         android:background="@drawable/radius"
         android:text="modifier son profil"
         android:textColor="@color/blanc"
-        app:layout_constraintBottom_toTopOf="@id/button_deconnecter"
+        app:layout_constraintBottom_toTopOf="@id/btn_SignOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +100,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/button_deconnecter"
+        android:id="@+id/btn_SignOut"
         android:layout_width="248dp"
         android:layout_height="48dp"
         android:layout_marginBottom="55dp"
