@@ -14,15 +14,19 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,11 +46,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.globalpharma.Model.AlarmContract;
-import com.example.globalpharma.Model.AlarmScheduler;
+import com.example.globalpharma.Model.Alarm;
 import com.example.globalpharma.Model.HourItem;
 import com.example.globalpharma.Model.Medication;
+import com.example.globalpharma.Model.MedicationForm;
 import com.example.globalpharma.R;
+import com.example.globalpharma.controller.AlarmThread;
+import com.example.globalpharma.controller.AlertReceiver;
+import com.example.globalpharma.controller.NotificationHelper;
+import com.example.globalpharma.controller.NotificationReceiver;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,10 +70,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -78,7 +89,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class NewMedicationActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, DatePickerDialog.OnDateSetListener,
-        TimePickerDialog.OnTimeSetListener, LoaderManager.LoaderCallbacks<Cursor> {
+        TimePickerDialog.OnTimeSetListener  {
 
     private ImageView mBtnChooseMedicationForm;
     private ImageView mBtnAddHour;
@@ -89,6 +100,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
     private Button mBtnValidateAddingMedication;
     private Button mBtnChooseMedicationMoment;
     private ImageView mImageViewMedicationPicture;
+    private ImageView mImageMedicationForm;
     private ConstraintLayout mConstraintLayoutAddPhoto;
     private ConstraintLayout mLayoutNewMedication;
     private ConstraintLayout mLayoutAllThe;
@@ -103,11 +115,11 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
     private TextInputEditText mTxtMedicationPathology;
     private TextInputEditText mTxtMedicationForm;
     private TextInputEditText mTxtMedicationQuantity;
-    private TextInputEditText mTxtMedicationTakingMomentValue;
+    private TextInputEditText mTxtTakingMomentValue;
     private TextInputEditText mTxtMedicationStartingDateValue;
     private TextInputEditText mTxtMedicationDurationIntValue;
     private TextInputEditText mTxtMedicationDurationStringValue;
-    private TextInputEditText mTxtMedicationDurationType;
+    private TextInputEditText mTxtDurationTypeValue;
     private TextInputEditText mTxtMedicationNotes;
     private RecyclerView mRecyclerView;
     private String imagePath;
@@ -124,10 +136,13 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
     private FirebaseFirestore db;
     private DatabaseReference dbRef;
     private Uri choosenImage;
-    private NotificationManagerCompat mNotificationManagerCompat;
+    private NotificationManagerCompat notificationManagerCompat;
+
+    //Image storage
     private static final String DB_STORAGE_IMG_PATH = "Medication";
     private Uri downloadImageUrl;
     private UploadTask mUploadTaskImage;
+    private FileOutputStream mFileOutputStream;
 
     //DbHelper
 
@@ -175,6 +190,8 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     private static final String KEY_ACTIVE = "ACTIVE" ;
 
+    private NotificationManagerCompat notificationManager;
+
     //constants time
     public static final long milMinute = 60000L;
     public static final long milHour = 3600000L;
@@ -182,29 +199,31 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
     public static final long milWeek = 6048000000L;
     public static final long milMonth = 2592000000L;
 
-    private View.OnTouchListener mOnTouchListener = (view, notionEvent) -> {
-            alarmHasChanged = true;
-            return false;
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_medication);
         getSupportActionBar().hide();
 
+        //Toast.makeText(this, (new File(Environment.getExternalStorageDirectory()+ "/MALSJD")).toString(), Toast.LENGTH_LONG).show();
+
         initActivity();
-
-        initRecyclerViewHours();
-
-        //Affiche l'activité qui mène aux formes de médicaments
-        showMedicationForms();
 
         //Choisir la photo du médicament
         addPhoto();
 
+        //Affiche l'activité qui mène aux formes de médicaments
+        showMedicationForms();
+
+        setMedicationFormName();
+
+        setMedicationFormImage();
+
         //Choix de la fréquence de prise de médicament
         showMedicationFrequencies();
+
+        //Choix de la date début
+        showDatePicker();
 
         //Choix de la fréquence de prise de médicament
         showDurationTypes();
@@ -213,17 +232,13 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
         showDurationValues();
 
-        showDatePicker();
-
         showTimePicker();
 
         showHours();
 
-        setMedicationFormName();
+        initRecyclerViewHours();
 
-        passNewMedicationsToList();
-
-        initAlarmDefaultValues();
+        passToMedicationsActivity();
     }
 
     //      - - - INITIATION OF VIEW - - -
@@ -254,16 +269,17 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         mLayoutStartingDate = findViewById(R.id.cl_starting_day);
         mLayoutNewMedication = findViewById(R.id.cl_new_medication);
         mImageViewMedicationPicture = findViewById(R.id.img_add_medication_picture);
+        mImageMedicationForm = findViewById(R.id.img_medication_form);
         mTxtMedicationName= findViewById(R.id.text_add_medication_name);
         mTxtMedicationForm = findViewById(R.id.text_add_medication_form);
         mTxtMedicationPathology = findViewById(R.id.text_add_medication_pathology);
         mTxtMedicationFrequency = findViewById(R.id.sp_add_frequency_medication);
         mTxtMedicationQuantity = findViewById(R.id.text_quantity);
-        mTxtMedicationTakingMomentValue = findViewById(R.id.text_add_moment_taking_value);
+        mTxtTakingMomentValue = findViewById(R.id.text_add_moment_taking_value);
         mTxtMedicationStartingDateValue = findViewById(R.id.text_starting_date_value);
         mTxtMedicationDurationIntValue = findViewById(R.id.text_add_medication_duration_int_value);
+        mTxtDurationTypeValue = findViewById(R.id.text_add_medication_type_duration);
         mTxtMedicationDurationStringValue = findViewById(R.id.text_add_medication_duration_value);
-        mTxtMedicationDurationType = findViewById(R.id.text_add_medication_type_duration);
         mTxtMedicationNotes = findViewById(R.id.text_add_medication_notes);
         mTxtAddPhoto = findViewById(R.id.text_add_medication_picture);
         mRecyclerView = findViewById(R.id.rv_hours);
@@ -275,23 +291,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         mStorageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference();
-
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
+        notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
 
         mHourAdapter = new HourAdapter(NewMedicationActivity.this, mHourItems);
         mRecyclerView.setAdapter(mHourAdapter);
@@ -302,16 +302,23 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         Calendar calendar = Calendar.getInstance();
         /*String dateS = calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.MONTH)
                 + " " + calendar.get(Calendar.YEAR);*/
-        String dateString = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.getTime());
+        String dateString = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
         mTxtMedicationStartingDateValue.setText(dateString);
 
-        mNotificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
     }
+
 
     //      - - - MANAGEMENT OF PHOTOS - - -
 
     public void addPhoto(){
         mConstraintLayoutAddPhoto.setOnClickListener(new ConstraintLayout.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopUp(v, R.menu.pop_up_get_photo_mode_menu);
+            }
+        });
+        mImageViewMedicationPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPopUp(v, R.menu.pop_up_get_photo_mode_menu);
@@ -367,12 +374,12 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
             cursor.close();
 
             try {
-                Bitmap image1 = MediaStore.Images.Media.getBitmap(getContentResolver(), choosenImage);
+                image = MediaStore.Images.Media.getBitmap(getContentResolver(), choosenImage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            Bitmap image = BitmapFactory.decodeFile(imagePath);
+            image = BitmapFactory.decodeFile(imagePath);
 
             imageName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
             mTxtAddPhoto.setText(imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("/") + 10) + ".." + imagePath.substring(imagePath.length() - 5));
@@ -380,19 +387,41 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         }
         else if(requestCode == RESULT_CODE_TAKING_PHOTO && resultCode == RESULT_OK){
             //Photo prise avec la caméra
-            Bitmap image = BitmapFactory.decodeFile(imagePath);
+            image = BitmapFactory.decodeFile(imagePath);
 
             saveImageToGallery(image);
+
             imageName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
             mTxtAddPhoto.setText(imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("/") + 10) + ".." + imagePath.substring(imagePath.length() - 5, imagePath.length()));
 
-             uploadPhoto();
+             //uploadPhoto();
         }
+    }
+
+    public String getImagePath(Context context, Uri uri){
+        String[] proj = {MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+
+        if(cursor != null){
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return  cursor.getString(columnIndex);
+        }
+        return null;
     }
 
     public void saveImageToGallery(Bitmap image){
         try {
-            MediaStore.Images.Media.insertImage(getContentResolver(), imagePath, imageName, "Tof");
+            File imagesFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Global Pharma");
+            if (!imagesFolder.exists()){
+                imagesFolder.mkdir();
+                MediaStore.Images.Media.insertImage(getContentResolver(), imagePath, imageName, "");
+            }
+            else{
+                Toast.makeText(this, imagesFolder.toString(), Toast.LENGTH_LONG).show();
+
+                MediaStore.Images.Media.insertImage(getContentResolver(), imagesFolder.toString(), imageName, "");
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -406,6 +435,58 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
         //return mUploadTaskImage.getSnapshot().getDownloadUrl();
     }
+
+    public String getExtension(Uri uri){
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+
+
+    //      - - - MANAGEMENT OF MEDICATION FORMS - - -
+
+    public void showMedicationForms(){
+        mBtnChooseMedicationForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(NewMedicationActivity.this, MedicationFormsActivity.class));
+            }
+        });
+    }
+
+
+    //      - - - MANAGEMENT OF MEDICATION FORMS NAMES AND IMAGES - - -
+
+    public String getMedicationFormDataFromIntent(){
+        if(getIntent().hasExtra("SelectedMedicationFormInfo"))
+            return getIntent().getStringExtra("SelectedMedicationFormInfo");
+        else
+            return null;
+    }
+
+    public MedicationForm getMedicationInfos(){
+        MedicationForm medication = null;
+        if (getMedicationFormDataFromIntent() != null) {
+            mImageMedicationForm.setVisibility(View.VISIBLE);
+            Gson gson = new Gson();
+            Type medicationFormType = new TypeToken<MedicationForm>(){}.getType();
+            medication = gson.fromJson(getMedicationFormDataFromIntent(), medicationFormType);
+        }
+        return medication;
+    }
+
+    public void setMedicationFormName(){
+        if (getMedicationInfos() != null)
+            mTxtMedicationForm.setText(getMedicationInfos().getFormName());
+    }
+
+    public void setMedicationFormImage(){
+        if (getMedicationInfos() != null) {
+            mImageMedicationForm.setImageResource(getMedicationInfos().getFormImage());
+        }
+    }
+
 
     //      - - - MANAGEMENT OF POP UP - - -
 
@@ -430,6 +511,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
             case R.id.item_daily:{
                 getNameFrequency(item);
                 mLayoutFrequencies.setVisibility(View.GONE);
+                repeatType = "daily";
                 return true;
             }
             case R.id.item_weekly:{
@@ -440,6 +522,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
                 mLayoutFrequencies.setMinHeight(mLayoutWeekly.getMinHeight());
                 setLayoutInvisible(mLayoutMonthly);
                 setLayoutInvisible(mLayoutAllThe);
+                repeatType = "weekly";
                 return true;
             }
             case R.id.item_monthly:{
@@ -450,6 +533,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
                 mLayoutFrequencies.setMinHeight(mLayoutMonthly.getMinHeight());
                 setLayoutInvisible(mLayoutWeekly);
                 setLayoutInvisible(mLayoutAllThe);
+                repeatType = "monthly";
                 return true;
             }
             case R.id.item_all_the:{
@@ -460,30 +544,38 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
                 mLayoutFrequencies.setMinHeight(mLayoutAllThe.getMinHeight());
                 setLayoutInvisible(mLayoutWeekly);
                 setLayoutInvisible(mLayoutMonthly);
+                repeatType = "all the";
                 return true;
             }
             case R.id.item_determinate_duration:{
-                mTxtMedicationDurationType.setText(item.getTitle());
+                mTxtDurationTypeValue.setText(item.getTitle());
                 mLayoutDuration.setVisibility(View.VISIBLE);
+                return true;
             }
             case R.id.item_indeterminate_duration:{
-                mTxtMedicationDurationType.setText(item.getTitle());
+                mTxtDurationTypeValue.setText(item.getTitle());
                 mLayoutDuration.setVisibility(View.GONE);
+                return true;
             }
             case R.id.item_before_eating:{
-                mTxtMedicationTakingMomentValue.setText(item.getTitle());
+                mTxtTakingMomentValue.setText(item.getTitle());
+                return true;
             }
             case R.id.item_while_eating:{
-                mTxtMedicationTakingMomentValue.setText(item.getTitle());
+                mTxtTakingMomentValue.setText(item.getTitle());
+                return true;
             }
             case R.id.item_after_eating:{
-                mTxtMedicationTakingMomentValue.setText(item.getTitle());
+                mTxtTakingMomentValue.setText(item.getTitle());
+                return true;
             }
             case R.id.item_out_of_eating:{
-                mTxtMedicationTakingMomentValue.setText(item.getTitle());
+                mTxtTakingMomentValue.setText(item.getTitle());
+                return true;
             }
             case R.id.item_whatever:{
-                mTxtMedicationTakingMomentValue.setText(item.getTitle());
+                mTxtTakingMomentValue.setText(item.getTitle());
+                return true;
             }
             default:{
                 return false;
@@ -491,16 +583,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         }
     }
 
-    //      - - - MANAGEMENT OF MEDICATION FORMS - - -
 
-    public void showMedicationForms(){
-        mBtnChooseMedicationForm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(NewMedicationActivity.this, MedicationFormsActivity.class));
-            }
-        });
-    }
 
     //      - - - MANAGEMENT OF MEDICATION FREQUENCIES - - -
 
@@ -517,21 +600,41 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         mTxtMedicationFrequency.setText(item.getTitle().toString());
     }
 
+
+
     //      - - - MANAGEMENT OF LAYOUTS - - -
 
     public void setLayoutInvisible(ConstraintLayout constraintLayout){
         constraintLayout.setVisibility(View.INVISIBLE);
     }
 
-    //      - - - MANAGEMENT OF TAKING MOMENTS OF MEDICATION - - -
 
-    public void showMomentsTaking(){
-        mBtnChooseMedicationMoment.setOnClickListener(new Button.OnClickListener() {
+
+    //      - - - MANAGEMENT OF DATES - - -
+
+    public void showDatePicker(){
+        mTxtMedicationStartingDateValue.setOnClickListener(new ConstraintLayout.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopUp(v, R.menu.pop_up_menu_taking_moment);
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "Date Picker");
             }
         });
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {//hourOfDay + " : " + minute
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String dateString = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
+        if (Date.parse(dateString) < Date.parse(mTxtMedicationStartingDateValue.getText().toString())) {
+            Toast.makeText(this, getText(R.string.text_error_starting_date_medication), Toast.LENGTH_SHORT).show();
+            showDatePicker();
+        }
+        else
+            mTxtMedicationStartingDateValue.setText(dateString);
     }
 
 
@@ -555,43 +658,17 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         });
     }
 
-    //      - - - MANAGEMENT OF DATES - - -
+    //      - - - MANAGEMENT OF TAKING MOMENTS OF MEDICATION - - -
 
-    public void showDatePicker(){
-        mTxtMedicationStartingDateValue.setOnClickListener(new ConstraintLayout.OnClickListener() {
+    public void showMomentsTaking(){
+        mBtnChooseMedicationMoment.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                DialogFragment datePicker = new DatePickerFragment();
-                datePicker.show(getSupportFragmentManager(), "Date Picker");
+                showPopUp(v, R.menu.pop_up_menu_taking_moment);
             }
         });
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {//hourOfDay + " : " + minute
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        day = dayOfMonth;
-        this.month = month;
-        this.year = year;
-        this.date = day + "-" + this.month + "-" + this.year;
-        String dateString = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
-        try {
-            choosenDate = mSimpleDateFormat.parse(dateString);
-            if (choosenDate.before(mSimpleDateFormat.parse(mTxtMedicationStartingDateValue.getText().toString()))) {
-                Toast.makeText(this, getText(R.string.text_error_starting_date_medication), Toast.LENGTH_SHORT).show();
-                showDatePicker();
-            }
-            else
-                mTxtMedicationStartingDateValue.setText(dateString);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
     //      - - - MANAGEMENT OF TIMES - - -
 
@@ -619,6 +696,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         selectedTimeStamp = calendar.getTimeInMillis();
         Toast.makeText(this, hourOfDay + " : " + minute, Toast.LENGTH_SHORT).show();
         addHour(hourOfDay, minute);
+        addAlarm();
     }
 
     public void showHours(){
@@ -632,80 +710,84 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
     }
 
     public void addHour(int hourOfDay, int minute){
-       mHourItems.add(new HourItem("1", hourOfDay + " : " + minute,
-            "Gellule", "8"));
-       mHourAdapter.notifyDataSetChanged();
-       mHourAdapter.notifyItemInserted(mHourItems.size());
-       mRecyclerView.setAdapter(mHourAdapter);
-    }
-
-    //      - - - MANAGEMENT OF MEDICATION NAMES - - -
-
-    public String getMedicationFormName(){
-        if(getIntent().hasExtra("mTxtMedicationForm"))
-            return getIntent().getStringExtra("mTxtMedicationForm");
+        if(!TextUtils.isEmpty(mTxtMedicationForm.getText().toString())) {
+            mHourItems.add(new HourItem("Horaire " + (mHourItems.size() + 1), hourOfDay + " : " + minute,
+                    mTxtMedicationForm.getText().toString(), "2"));
+            mHourAdapter.notifyDataSetChanged();
+            mHourAdapter.notifyItemInserted(mHourItems.size());
+            mRecyclerView.setAdapter(mHourAdapter);
+            initRecyclerViewHours();
+        }
         else
-            return null;
+            Toast.makeText(this, "Choose a medication form", Toast.LENGTH_SHORT).show();
+
     }
 
-    public void setMedicationFormName(){
-        if (getMedicationFormName() != null)
-            mTxtMedicationForm.setText(getMedicationFormName());
-    }
 
     //      - - - MANAGEMENT OF NEW MEDICATIONS TO STORE - - -
 
-    public void passNewMedicationsToList(){
+    public void setNewMedicationsToList(List<HourItem> hourItems){
+        if(!hourItems.isEmpty()){
+            Medication medication = new Medication(
+                mTxtMedicationName.getText().toString(),
+                mTxtMedicationPathology.getText().toString(),
+                mTxtMedicationForm.getText().toString(),
+                mTxtMedicationStartingDateValue.getText().toString(),
+                mTxtMedicationQuantity.getText().toString(),
+                serializeHour(mHourItems),
+                mTxtTakingMomentValue.getText().toString(),
+                image
+            );
+
+            mMedications.add(medication);
+        }
+    }
+
+    public String serializeMedication(List<Medication> medications){
+        Gson gson = new Gson();
+        return gson.toJson(medications);
+    }
+
+    public String serializeMedication(Medication medication){
+        Gson gson = new Gson();
+        return gson.toJson(medication);
+    }
+
+    public String serializeHour(List<HourItem> hours){
+        Gson gson = new Gson();
+        return gson.toJson(hours);
+    }
+
+    public String serializeHour(HourItem hour){
+        Gson gson = new Gson();
+        return gson.toJson(hour);
+    }
+
+    public void passToMedicationsActivity(){
         mBtnValidateAddingMedication.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(true == true){
-                    addMedicationsToDatabase();
-                    Intent intent = new Intent(NewMedicationActivity.this, Accueil.class);
-                    passMedicationsList(mMedications, intent);
-                    startActivity(intent);
-                    finish();
-                }
+                    /*try {
+                        Intent intent = new Intent(NewMedicationActivity.this, Accueil.class);
+                        intent.putExtra("medications List", serializeMedication(mMedications));
+                        startActivity(intent);
+                        finish();
+                    }
+                    catch (Exception e){
+                        Log.d("Error: ", e.toString());
+                    }*/
+                    //notifyAlarm(1);
+                    setNewMedicationsToList(mHourItems);
+                    //addAlarm(calendar);
             }
         });
     }
 
-    public String serializeMedications(List<Medication> objects){
-        Gson gson = new Gson();
-        return gson.toJson(objects);
-    }
 
-    public void passMedicationsList(List<Medication> medicationlist, Intent intent){
-        Medication medication = new Medication("Paracétamol", "Head", "Comprimé", "4", "12h35", null, null, image);
-        Medication medication1 = new Medication("Paracétamol1", "Head", "Comprimé", "4", "12h35", null, null, image);
-        Medication medication2 = new Medication("Paracétamol2", "Head", "Comprimé", "4", "12h35", null, null, image);
-        Medication medication3 = new Medication("Paracétamol3", "Head", "Comprimé", "4", "12h35", null, null, image);
-        Medication medication4 = new Medication("Paracétamol4", "Head", "Comprimé", "4", "12h35", null, null, image);
-
-        medicationlist.add(medication);
-        medicationlist.add(medication1);
-        medicationlist.add(medication2);
-        medicationlist.add(medication3);
-        medicationlist.add(medication4);
-
-        intent.putExtra("medications List", serializeMedications(medicationlist));
-        addAlarm(new HourItem("Month", "12h48", "Comprimé", "5"));
-    }
 
     //      - - - MANAGEMENT OF DATABASE - - -
 
-    public void addMedicationsToDatabase(){
-        Medication.setMedicationToDatabase(new Medication());
 
-        uploadPhoto();
-        downloadImageUrl = mUploadTaskImage.getSnapshot().getDownloadUrl();
-    }
-
-    public String getExtension(Uri uri){
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
 
     public boolean areFieldsCorrect(){
         boolean result = true;
@@ -729,11 +811,11 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
             mTxtMedicationFrequency.setError(getText(R.string.text_error_medication_frequency));
             result = false;
         }
-        else if(TextUtils.isEmpty(mTxtMedicationDurationType.getText())){
-            mTxtMedicationDurationType.setError(getText(R.string.text_error_medication_type_duration));
+        else if(TextUtils.isEmpty(mTxtDurationTypeValue.getText())){
+            mTxtDurationTypeValue.setError(getText(R.string.text_error_medication_type_duration));
             result = false;
         }
-        else if(mTxtMedicationDurationType.getText().equals(getText(R.string.text_determinate_duration))){
+        else if(mTxtDurationTypeValue.getText().equals(getText(R.string.text_determinate_duration))){
             if(TextUtils.isEmpty(mTxtMedicationDurationIntValue.getText())){
                 mTxtMedicationDurationIntValue.setError(getText(R.string.text_errore_duration_medication));
                 result = false;
@@ -743,8 +825,8 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
                 result = false;
             }
         }
-        if(TextUtils.isEmpty(mTxtMedicationTakingMomentValue.getText())){
-            mTxtMedicationTakingMomentValue.setError(getText(R.string.text_error_moment_taking_medication));
+        if(TextUtils.isEmpty(mTxtTakingMomentValue.getText())){
+            mTxtTakingMomentValue.setError(getText(R.string.text_error_moment_taking_medication));
             result = false;
         }
         if(HoursActivity.mHourItems.isEmpty()){
@@ -754,118 +836,95 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         return result;
     }
 
-    public void insertHour(int hourOfDay, int minute){
-        Intent intent = new Intent(NewMedicationActivity.this, HoursActivity.class);
-        intent.putExtra("hour", new HourItem("1", hourOfDay + " : " + minute,
-                "Gellule", "8"));
-        startActivity(intent);
-    }
 
-    public void addAlarm(HourItem hourItem){
-        ContentValues values = new ContentValues();
 
-        values.put(AlarmContract.AlarmEntry.KEY_TITLE, mTxtMedicationPathology.getText().toString());
-        values.put(AlarmContract.AlarmEntry.KEY_DATE, mTxtMedicationStartingDateValue.getText().toString());
-        values.put(AlarmContract.AlarmEntry.KEY_TIME, hourItem.getHourValue());
-        values.put(AlarmContract.AlarmEntry.KEY_REPEAT, repeat);
-        values.put(AlarmContract.AlarmEntry.KEY_REPEAT_NO, noRepeat);
-        values.put(AlarmContract.AlarmEntry.KEY_REPEAT_TYPE, repeatType);
-        values.put(AlarmContract.AlarmEntry.KEY_ACTIVE, active);
-
-        fixRepeatTime();
-
-        if(currentReminderUri == null){
-            Uri uri =  getContentResolver().insert(AlarmContract.AlarmEntry.CONTENT_URI, values);
-            if(uri == null){
-                //Error
-                Toast.makeText(this, "Alarm erronée", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(this, "Alarm inserted", Toast.LENGTH_SHORT).show();
-                notifyAlarm();
-            }
-        }
-        else{
-            int rowsAffected = getContentResolver().update(currentReminderUri, values, null, null);
-            if(rowsAffected == 0){
-                //Error
-            }
-            else{
-                //Done
-            }
-        }
-
-    }
-
-    public void initAlarmDefaultValues(){Intent intent = getIntent();
-        currentReminderUri = intent.getData();
-
-        if(currentReminderUri == null){
-            setTitle("Add alarms details");
-            invalidateOptionsMenu();
-        }
-        else{
-            setTitle("Edit Reminder");
-        }
-
-        active = "true";
-        repeat = "true";
-        noRepeat = Integer.toString(1);
-        repeatType = "day";
-        calendar = Calendar.getInstance();
-        minute = calendar.get(Calendar.MINUTE);
-        hour = calendar.get(Calendar.HOUR);
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        date = day + "-" + month + "-" + year;
-        time = hour + " : " + minute;
-    }
+    //      --- ALARMS ---
 
     private void deleteAlarm(){
-        if(currentReminderUri != null){
-            int deletedRows = getContentResolver().delete(currentReminderUri, null, null);
-            if(deletedRows == 0){
-                //Error
-            }
-            else{
-                //deleted
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
+    }
+
+    private void addAlarm(){
+        /*AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, 0);
+
+
+        fixRepeatTime();
+        //alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, repeatTime, pendingIntent);
+*/
+
+        //int days = 0;
+        if(!mMedications.isEmpty()) {
+            for (Medication medication :
+                    mMedications) {
+                int days = 0;
+                for (HourItem hour :
+                        medication.getHourItem()) {
+                    days += Integer.valueOf(hour.getQuantity());
+                    String endingDate = String.valueOf(Date.parse(mTxtMedicationStartingDateValue.getText().toString()) + days*1000);
+
+
+                }
             }
         }
+
+       // Alarm alarm = new Alarm(mTxtMedicationStartingDateValue.getText().toString(),  endingDate, repeatTime, )
     }
 
     private void fixRepeatTime(){
         switch (repeatType.toLowerCase()){
-            case "minute":
-                repeatTime = Integer.parseInt(noRepeat) * milMinute;
-                break;
-            case "hour":
+            case "all the":
                 repeatTime = Integer.parseInt(noRepeat) * milHour;
                 break;
-            case "day":
+            case "daily":
                 repeatTime = Integer.parseInt(noRepeat) * milDay;
                 break;
-            case "week":
+            case "weekly":
                 repeatTime = Integer.parseInt(noRepeat) * milWeek;
                 break;
-            case "month":
+            case "monthly":
                 repeatTime = Integer.parseInt(noRepeat) * milMonth;
                 break;
-
+            default:
+                break;
         }
 
     }
 
-    private void notifyAlarm(){
-        if(active.toLowerCase().equals("true")){
-            if(repeat.toLowerCase().equals("true")){
-                new AlarmScheduler().setRepeatAlarm(NewMedicationActivity.this, selectedTimeStamp, currentReminderUri, repeatTime);
-            }
-            else if(repeat.toLowerCase().equals("false")){
-                new AlarmScheduler().setAlarm(NewMedicationActivity.this,selectedTimeStamp, currentReminderUri);
-            }
-        }
+    private void notifyAlarm(int id){
+        String title = mTxtMedicationName.getText().toString() + " - " + mTxtMedicationPathology.getText().toString();
+        String content = mTxtTakingMomentValue.getText().toString();
+        NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
+        NotificationCompat.Builder nb = notificationHelper.getChannelNotificationForALert(title, content);
+        notificationHelper.getManager().notify(id, nb.build());
+
+        /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+
+        Intent broadcastIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
+        broadcastIntent.putExtra("Action", "Text");
+
+        PendingIntent acionIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(), "Channel1")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Title")
+                .setContentText("Text")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setContentIntent(pendingIntent)
+                .addAction(R.mipmap.ic_launcher, "Pris", acionIntent)
+                .addAction(R.mipmap.ic_launcher, "Non Pris", acionIntent)
+                .setColor(Color.RED)
+                .build();
+
+        notificationManagerCompat.notify(1, notification);*/
     }
 
     @Override
@@ -873,47 +932,6 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         super.onBackPressed();
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
-        String[] projection = {
-                AlarmContract.AlarmEntry.ID,
-                AlarmContract.AlarmEntry.KEY_TITLE,
-                AlarmContract.AlarmEntry.KEY_DATE,
-                AlarmContract.AlarmEntry.KEY_TIME,
-                AlarmContract.AlarmEntry.KEY_REPEAT,
-                AlarmContract.AlarmEntry.KEY_REPEAT_NO,
-                AlarmContract.AlarmEntry.KEY_REPEAT_TYPE,
-                AlarmContract.AlarmEntry.KEY_ACTIVE
-        };
-        return new CursorLoader(this, currentReminderUri, projection, null, null, null);
-    }
+    public void readSpecificData(String name)
 
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if(data == null || data.getCount() < 1){
-            return;
-        }
-
-        if(data.moveToFirst()){
-            int dateColumn = data.getColumnIndex(AlarmContract.AlarmEntry.KEY_DATE);
-            int timeColumn = data.getColumnIndex(AlarmContract.AlarmEntry.KEY_TIME);
-            int repeatColumn = data.getColumnIndex(AlarmContract.AlarmEntry.KEY_REPEAT);
-            int noRepeatColumn = data.getColumnIndex(AlarmContract.AlarmEntry.KEY_REPEAT_NO);
-            int repeatTypeColumn = data.getColumnIndex(AlarmContract.AlarmEntry.KEY_REPEAT_TYPE);
-            int activeColumn = data.getColumnIndex(AlarmContract.AlarmEntry.KEY_ACTIVE);
-
-            String dateValue = data.getString(dateColumn);
-            String repeatValue = data.getString(repeatColumn);
-            String noRepeatValue = data.getString(noRepeatColumn);
-            String repeatTypeValue = data.getString(repeatTypeColumn);
-            String activeValue = data.getString(activeColumn);
-            String timeValue = data.getString(timeColumn);
-
-        }
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
-    }
 }
