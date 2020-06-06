@@ -9,10 +9,22 @@ public class Pharmacy_Location {
     private GeoPoint geoPoint;
     private Pharmacy pharmacy;
     private @ServerTimestamp Date timestring;
+    private Boolean degarde;
     private Ville ville;
+    private String Pharmacy_Location;
 
     public Pharmacy_Location()
     {
+
+    }
+    public Pharmacy_Location(String Pharmacy_Location ,Date timestring,GeoPoint geoPoint,Pharmacy pharmacy,Ville ville,Boolean degarde)
+    {
+        this.geoPoint=geoPoint;
+        this.pharmacy=pharmacy;
+        this.timestring=timestring;
+        this.ville=ville;
+        this.degarde=degarde;
+        this.Pharmacy_Location=Pharmacy_Location;
 
     }
     public Pharmacy_Location(Date timestring,GeoPoint geoPoint,Pharmacy pharmacy,Ville ville)
@@ -21,6 +33,13 @@ public class Pharmacy_Location {
         this.pharmacy=pharmacy;
         this.timestring=timestring;
         this.ville=ville;
+
+    }
+    public Pharmacy_Location(Pharmacy pharmacy)
+    {
+
+        this.pharmacy=pharmacy;
+
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.globalpharma.Views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,19 @@ import com.example.globalpharma.Model.Ville;
 import com.example.globalpharma.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import static com.makeramen.roundedimageview.RoundedImageView.TAG;
 
-public class Pharmacy extends Fragment {
+
+public class Pharmacy extends Fragment implements com.example.globalpharma.Interface.onUserClicked {
     // TODO: Rename parameter arguments, choose names that match
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -34,7 +40,7 @@ public class Pharmacy extends Fragment {
     FirestoreRecyclerAdapter adapter;
     private FirebaseFirestore firebaseFirestore;
     private  RecyclerView mFirestorelist;
-    ValueEventListener listener;
+  /*  ValueEventListener listener;*/
     private String mParam1;
     private String mParam2;
     private ArrayList<Ville> mListes= new ArrayList<>();
@@ -106,11 +112,15 @@ public class Pharmacy extends Fragment {
         return view;
     }
 
+    @Override
+    public void onUserClicked(int position) {
 
+    }
 
 
     private class listeViewHolder extends RecyclerView.ViewHolder  {
         TextView nomVille;
+        ArrayList<Ville> villes= new ArrayList<>();
         RelativeLayout container;
         OnListListener onListListener;
         public listeViewHolder(@NonNull View itemView) {
@@ -120,15 +130,45 @@ public class Pharmacy extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GpsFragment fragment=new GpsFragment();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_container,fragment).commit();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("ListeVille")
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Ville ville = document.toObject(Ville.class);
+                                            villes.add(ville);
+                                            if (ville.getNom() =="Ville@13020") {
+                                                Find_Allnight_Pharmacy fragment = new Find_Allnight_Pharmacy();
+                                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                                transaction.replace(R.id.fragment_container, fragment).commit();
+                                            } else {
+
+                                             /*   AllnightPharmacyStillNotAvailable fragment=new AllnightPharmacyStillNotAvailable();
+                                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                                transaction.replace(R.id.fragment_container,fragment).commit();*/
+                                                Find_Allnight_Pharmacy fragment = new Find_Allnight_Pharmacy();
+                                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                                transaction.replace(R.id.fragment_container, fragment).commit();
+                                            }
+
+                                            Log.d(TAG, document.getId() + " => " + document.getData());
+                                        }
+
+
+                                    } else {
+                                        Log.w(TAG, "Error getting documents.", task.getException());
+                                    }
+                                }
+
+
+                            });
                 }
+
             });
-
         }
-
-
     }
 
     @Override
@@ -142,5 +182,7 @@ public class Pharmacy extends Fragment {
         super.onStart();
         adapter.startListening();
     }
+
+
 
 }

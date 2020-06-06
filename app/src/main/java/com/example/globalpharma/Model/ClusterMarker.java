@@ -12,12 +12,13 @@ public class ClusterMarker implements ClusterItem {
     private User user;
     private  Pharmacy pharmacy;
 
-    public ClusterMarker(LatLng position, String snippet, int iconPicture) {
+    public ClusterMarker(LatLng position, String title,String snippet, int iconPicture) {
         this.position = position;
-
+this.title=title;
         this.snippet = snippet;
         this.iconPicture = iconPicture;
     }
+
 
 
     public int getIconPicture() {

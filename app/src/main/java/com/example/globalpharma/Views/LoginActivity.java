@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.globalpharma.Model.User;
 import com.example.globalpharma.R;
-import com.example.globalpharma.util.UserClient;
+import com.example.globalpharma.UserClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(task.isSuccessful()){
                             Log.d(TAG, "onComplete: successfully set the user client.");
                             User user1 = task.getResult().toObject(User.class);
-                            UserClient.setUser(user1);
+                            ((UserClient)(getApplicationContext())).setUser(user1);
                         }
                     });
 

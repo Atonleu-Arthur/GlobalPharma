@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mConfirmPassword = (EditText) findViewById(R.id.input_confirm_password);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        findViewById(R.id.btn_register).setOnClickListener(this);
+        findViewById(R.id.btnSubmit).setOnClickListener(this);
 
         mDb = FirebaseFirestore.getInstance();
 

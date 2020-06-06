@@ -9,17 +9,33 @@
     tools:context=".Views.Pharmacy">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RcVilles"
-        android:layout_width="368dp"
-        android:layout_height="527dp"
+    <Button
+        android:id="@+id/btnAllnihtPharmacy"
+        android:layout_width="190dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="36dp"
+
+        android:background="@drawable/radiusvisualiserlaliste"
+        android:text="Afficher surla carte"
+         android:drawableLeft="@drawable/icons8_map_100px"
+        android:textColor="@color/textcolor"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcallnightPharmacy"
+        android:layout_width="361dp"
+        android:layout_height="603dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.588"
-        tools:listitem="@layout/item_ville" />
+        app:layout_constraintVertical_bias="0.718"
+        tools:listitem="@layout/item_allnight_pharmacy" />
 
     <EditText
         android:id="@+id/search_input"
@@ -46,5 +62,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.148" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

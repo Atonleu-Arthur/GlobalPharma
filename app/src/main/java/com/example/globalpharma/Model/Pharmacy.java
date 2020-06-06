@@ -18,7 +18,12 @@ public class Pharmacy {
         this.Degarde=degarde;
         this.Phone=phone;
     }
+    public Pharmacy(String placename,String vicinity)
+    {
+        this.PlaceName=placename;
+        this.Vicinoty=vicinity;
 
+    }
     public String getPhone() {
         return Phone;
     }

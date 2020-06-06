@@ -128,7 +128,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                 int avatar = R.drawable.pharmacy_50px; // Marqueur par defaut
                 ClusterMarker newClusterMarker = new ClusterMarker(
                         new LatLng(lat, lng),
-
+"",
                         snippet,
 
                         avatar
@@ -195,7 +195,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
-                        Log.d(TAG, "saveUserLocation: \ninsertion de Pharlaciy location." +
+                        Log.d(TAG, "saveUserLocation: \ninsertion de Pharmacy location." +
                                 "\n latitude: " + pharmacy_location.getGeoPoint().getLatitude() +
                                 "\n longitude: " + pharmacy_location.getGeoPoint().getLongitude());
                     }

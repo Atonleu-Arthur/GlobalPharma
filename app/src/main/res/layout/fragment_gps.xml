@@ -12,57 +12,71 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/myposition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="300dp"
-            android:layout_marginTop="420dp"
-            android:clickable="true"
-            app:backgroundTint="@color/blanc"
-            app:srcCompat="@drawable/ic_my_location_black_24dp"
-            tools:ignore="VectorDrawableCompat" />
 
-        <fragment
+        <com.google.android.gms.maps.MapView
             android:id="@+id/googlemap"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".Views.MapsFragment" />
+            android:layout_height="683dp" />
 
         <Button
             android:id="@+id/btnPharmacie"
-            android:layout_width="191dp"
-            android:layout_height="45dp"
+            android:layout_width="166dp"
+            android:layout_height="37dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="35dp"
             android:background="@drawable/radius"
             android:text="Pharmaices à proximité"
-            android:textColor="@color/blanc" />
+            android:textColor="@color/blanc"
+            android:textSize="12sp" />
 
         <Button
-            android:layout_width="191dp"
-            android:layout_height="45dp"
+            android:layout_width="165dp"
+            android:layout_height="37dp"
             android:layout_marginLeft="215dp"
             android:layout_marginTop="35dp"
             android:background="@drawable/radiusbeige"
             android:text="Pharmaices à proximité"
             android:textColor="@color/textcolor"
 
-            />
+            android:textSize="12sp" />
 
         <Button
             android:layout_width="190dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="215dp"
-            android:textSize="12sp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="192dp"
+
+            android:layout_marginLeft="192dp"
             android:layout_marginTop="490dp"
+            android:layout_marginEnd="29dp"
+            android:layout_marginRight="29dp"
+            android:layout_marginBottom="297dp"
             android:background="@drawable/radiusvisualiserlaliste"
-
-            android:text="@string/view"
+            android:text="Afficher la liste"
             android:textColor="@color/textcolor"
+            android:textSize="12sp" />
 
-            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcallNightPharmacy"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="76dp"
+            tools:listitem="@layout/item_allnightgpsfragment" />
+
 
     </RelativeLayout>
 
