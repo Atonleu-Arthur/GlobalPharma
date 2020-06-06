@@ -1,110 +1,69 @@
 package com.example.globalpharma.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.net.Uri;
 
-public class User implements Parcelable
-{
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.UploadTask;
 
-    private String email;
-    private String user_id;
-    private String username;
-    private String avatar;
-    private  String phone;
+public class User {
 
-    public User(String email, String user_id, String username, String avatar) {
-        this.email = email;
-        this.user_id = user_id;
-        this.username = username;
-        this.avatar = avatar;
+    private String id;
+    private String name;
+    private String phone;
+    private String password;
+
+    public User(String email, String password) {
+        email = phone;
+        this.password = password;
     }
-    public User(String email, String user_id, String username, String avatar,String phone) {
-        this.email = email;
-        this.user_id = user_id;
-        this.username = username;
-        this.avatar = avatar;
-        this.phone=phone;
-    }
+
     public User() {
 
     }
 
-    protected User(Parcel in) {
-        email = in.readString();
-        user_id = in.readString();
-        username = in.readString();
-        avatar = in.readString();
+    public String getPhone() { return phone; }
+
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getId() {
+        return id;
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-
-    public String getAvatar() {
-        return avatar;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public String getName() {
+        return name;
     }
 
-    public static Creator<User> getCREATOR() {
-        return CREATOR;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getUser_id() {
-        return user_id;
+    // - - - FIREBASE STORAGE - - -
+
+    public static DatabaseReference getAllUsers(){
+        return new Database<User>(new User()).getReference();
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public static UploadTask uploadImage(Uri imageUri, String child){
+        return new Database<User>(new User()).uploadImage(imageUri, child);
     }
 
-    public String getUsername() {
-        return username;
+    public static void deleteImage(String fullUrl){
+        new Database<User>(new User()).deleteImage(fullUrl);
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", user_id='" + user_id + '\'' +
-                ", username='" + username + '\'' +
-                ", avatar='" + avatar + '\'' +
-                '}';
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(email);
-        dest.writeString(user_id);
-        dest.writeString(username);
-        dest.writeString(avatar);
+    public static void deleteUser(String id){
+        new Database<User>(new User()).removeObject(id);
     }
 }
-

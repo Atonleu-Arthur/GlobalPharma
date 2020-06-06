@@ -7,117 +7,67 @@
     android:background="@color/backgroundActivity"
     tools:context=".Views.LoginActivity">
 
-    <Button
-        android:id="@+id/btnConnect"
-        android:layout_width="174dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="68dp"
-        android:background="@drawable/radius"
-        android:text="@string/connexion"
-        android:textColor="@color/white"
-        android:textSize="12dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/link_register"
-        android:layout_width="172dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="68dp"
-        android:background="@drawable/radiusblanc"
-        android:text="@string/registration"
-        android:textColor="@color/textcolorgray"
-        android:textSize="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnConnect"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="358dp"
-        android:layout_height="47dp"
-        android:layout_marginBottom="136dp"
-        android:background="@drawable/radiusblanc"
-        android:hint="@string/name_or_phone"
-        android:paddingLeft="10dp"
-        android:textColor="@color/textcolorgray"
-        android:textColorHint="@color/textHintColor"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        >
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="364dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:background="@drawable/radiusblanc"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:paddingLeft="10dp"
-        android:textColor="#757171"
-        android:textColorHint="@color/textHintColor"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@id/btnConnect"
-        app:layout_constraintTop_toBottomOf="@+id/email"
-        app:layout_constraintVertical_bias="0.523" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-    <Button
-        android:id="@+id/email_sign_in_button"
-        android:layout_width="327dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="136dp"
-        android:layout_marginBottom="128dp"
-        android:width="252dip"
-        android:background="@drawable/radius"
-        android:text="@string/connexion"
-        android:textColor="#FFF9F9"
-        app:layout_constraintBottom_toBottomOf="parent"
+            <Button
+                android:id="@+id/btnConnect"
+                android:layout_width="174dp"
+                android:layout_height="37dp"
+                android:layout_marginTop="68dp"
+                android:background="@drawable/radius"
+                android:text="@string/connexion"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toStartOf="@id/btnRegistration"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/fragment_login"/>
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.357"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-         />
+            <Button
+                android:id="@+id/btnRegistration"
+                android:layout_width="172dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="68dp"
+                android:background="@drawable/radiusblanc"
+                android:text="@string/registration"
+                android:textColor="@color/textcolorgray"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnConnect"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/fragment_login" />
 
-    <TextView
-        android:id="@+id/forgot_pass_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mot de passe oublié?"
-        app:layout_constraintBottom_toTopOf="@+id/email_sign_in_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+            <fragment
+                android:id="@+id/fragment_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnRegistration"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="15dp"
+                android:name="com.example.globalpharma.Views.LoginFragment"
+                />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.609" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

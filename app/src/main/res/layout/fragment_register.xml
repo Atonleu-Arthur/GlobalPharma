@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundActivity">
+
+
+    <ImageView
+        android:layout_width="405dp"
+        android:layout_height="407dp"
+        android:background="@drawable/backgroung_green_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnSubmit"
+        app:layout_constraintTop_toBottomOf="@id/txtName" />
+
+    <EditText
+        android:id="@+id/txtName"
+        android:layout_width="358dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/radiusblanc"
+        android:hint="@string/name"
+        android:textColor="@color/textcolorgray"
+        android:textColorHint="@color/textHintColor"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtEmail"
+        android:layout_width="358dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/radiusblanc"
+        android:hint="@string/email"
+        android:textColor="@color/textcolorgray"
+        android:textColorHint="@color/textHintColor"
+
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtName" />
+
+    <EditText
+        android:id="@+id/txtPassword"
+        android:layout_width="358dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/radiusblanc"
+        android:hint="@string/password"
+        android:paddingLeft="10dp"
+        android:inputType="textPassword"
+        android:textColor="@color/textcolorgray"
+        android:textColorHint="@color/textHintColor"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtEmail" />
+
+    <EditText
+        android:id="@+id/txtConfirmPassword"
+        android:layout_width="358dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/radiusblanc"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:textColor="@color/textcolorgray"
+        android:textColorHint="@color/textHintColor"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPassword" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="327dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="96dp"
+        android:width="252dip"
+        android:background="@drawable/radius"
+        android:text="@string/registration"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtConfirmPassword" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,20 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_container"
     android:background="@color/beige"
     tools:context=".Views.Accueil">
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="410dp"
-        android:layout_height="46dp"
-        android:background="@drawable/radiusbottom"
-        app:itemIconTint="@drawable/nav_selector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+    
+    <fragment
+        android:id="@+id/fragment_header_taking_medication"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/scrollview_taking_medication"
+        android:name="com.example.globalpharma.Views.HeaderFragment"
+     />
+
+    <ScrollView
+        android:id="@+id/scrollview_taking_medication"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_header_taking_medication">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        >
+            <TextView
+                android:id="@+id/text_my_treatments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/btn_add_medication"
+                android:text="@string/text_my_treatment"
+                android:textColor="@color/textcolor"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:paddingLeft="15dp"
+                />
+
+
+            <ImageView
+                android:id="@+id/btn_add_medication"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@mipmap/ic_add_treatment_foreground"
+                android:layout_marginRight="25dp"
+            />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_add_medication"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <fragment
+                    android:id="@+id/fragment_medication"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:name="com.example.globalpharma.Views.MedicationFragment"
+                />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

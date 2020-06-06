@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/cl_new_medication"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.NewMedicationActivity"
+    android:background="@color/backgroundActivity">
+
+
+    <TextView
+        android:id="@+id/header_new_medication"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_bottom_radius"
+        android:text="@string/text_new_medication"
+        android:textAlignment="center"
+        android:textColor="@color/textcolor"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"
+        />
+
+    <ScrollView
+        android:id="@+id/new_medication_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/header_new_medication"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:id="@+id/add_photo"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              >
+
+              <ImageView
+                  android:id="@+id/img_add_medication_picture"
+                  android:layout_width="50dp"
+                  android:layout_height="50dp"
+                  android:layout_marginLeft="20dp"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"
+                  android:src="@mipmap/ic_camera_foreground"
+                  android:clickable="true"
+                  />
+
+              <TextView
+                  android:id="@+id/text_add_medication_picture"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintStart_toEndOf="@id/img_add_medication_picture"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  android:text="@string/text_add_picture_medication"
+                  android:textSize="20dp"
+                  android:textColor="@color/textcolor"
+                  />
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_add_medication_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_photo"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                android:hint="@string/text_add_medication_name"
+                android:paddingLeft="20dp"
+             />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_add_medication_pathology"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_add_medication_name"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:hint="@string/text_pathology"
+                android:paddingLeft="20dp"
+             />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_add_medication_form"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_add_medication_pathology"
+                android:layout_marginTop="10dp"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_add_medication_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@color/white"
+                    android:hint="@string/text_add_medication_form"
+                    android:paddingLeft="20dp"
+                    android:editable="false"
+                    />
+
+                <ImageView
+                    android:id="@+id/btn_add_medication_form"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/ic_more_than_foreground"
+                    android:clickable="true"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_add_medication_form"
+                android:layout_marginTop="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_add_medication_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@color/white"
+                    android:hint="@string/text_add_medication_quantity"
+                    android:paddingLeft="20dp"
+                    />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_quantity"
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="@id/text_add_medication_count"
+                    app:layout_constraintBottom_toBottomOf="@id/text_add_medication_count"
+                    android:layout_marginRight="15dp"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:inputType="number"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_add_frequency"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_quantity"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_add_medication_frequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/white"
+                    android:editable="false"
+                    android:hint="@string/text_add_medication_frequency"
+                    android:paddingLeft="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <Button
+                    android:id="@+id/btn_add_medication_frequency"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="@id/text_add_medication_frequency"
+                    app:layout_constraintBottom_toBottomOf="@id/text_add_medication_frequency"
+                    android:background="@mipmap/ic_sort_down_foreground"
+                    />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sp_add_frequency_medication"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_add_medication_frequency"
+                    app:layout_constraintBottom_toBottomOf="@id/text_add_medication_frequency"
+                    android:maxWidth="120dp"
+                    android:ellipsize="end"
+                    android:editable="false"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/frequencies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/cl_add_frequency"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_weekly_frequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="gone"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_monday"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/white"
+                        android:editable="false"
+                        android:text="@string/text_lundi"
+                        android:paddingLeft="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/chk_monday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/text_monday"
+                        app:layout_constraintTop_toTopOf="@id/text_monday"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_tuesday"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:editable="false"
+                        android:text="@string/text_mardi"
+                        android:paddingLeft="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_monday"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/chk_tuesday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/text_tuesday"
+                        app:layout_constraintTop_toTopOf="@id/text_tuesday"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_wednesday"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:editable="false"
+                        android:text="@string/text_mercredi"
+                        android:paddingLeft="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_tuesday"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/chk_wednesday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/text_wednesday"
+                        app:layout_constraintTop_toTopOf="@id/text_wednesday"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_thursday"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:editable="false"
+                        android:text="@string/text_jeudi"
+                        android:paddingLeft="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_wednesday"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/chk_thursday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/text_thursday"
+                        app:layout_constraintTop_toTopOf="@id/text_thursday"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_friday"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:editable="false"
+                        android:text="@string/text_vendredi"
+                        android:paddingLeft="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_thursday"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/chk_friday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/text_friday"
+                        app:layout_constraintTop_toTopOf="@id/text_friday"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_saturday"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:editable="false"
+                        android:text="@string/text_samedi"
+                        android:paddingLeft="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_friday"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/chk_saturday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/text_saturday"
+                        app:layout_constraintTop_toTopOf="@id/text_saturday"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_sunday"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:editable="false"
+                        android:text="@string/text_dimanche"
+                        android:paddingLeft="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_saturday"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/chk_sunday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/text_sunday"
+                        app:layout_constraintTop_toTopOf="@id/text_sunday"
+                        android:layout_marginRight="10dp"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_all_the"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:maxHeight="50dp"
+                    android:visibility="gone"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_all_the"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/white"
+                        android:editable="false"
+                        android:hint="@string/text_all_the"
+                        android:paddingLeft="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_all_the_value_int"
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:background="@color/white"
+                        android:hint="3"
+                        android:paddingLeft="20dp"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toStartOf="@id/text_all_the_value_string"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginRight="5dp"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_all_the_value_string"
+                        android:layout_width="130dp"
+                        android:layout_height="50dp"
+                        android:background="@color/white"
+                        android:paddingLeft="20dp"
+                        android:hint="mois"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_monthly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:maxHeight="50dp"
+                    android:visibility="gone"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_day_taking"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/white"
+                        android:editable="false"
+                        android:hint="@string/text_day_taking"
+                        android:paddingLeft="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_day_taking_value"
+                        android:layout_width="130dp"
+                        android:layout_height="50dp"
+                        android:background="@color/white"
+                        android:paddingLeft="20dp"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_starting_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/frequencies"
+                android:layout_marginTop="5dp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_add_medication_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:editable="false"
+                    android:hint="@string/text_starting_medicatio_date"
+                    android:paddingLeft="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_starting_date_value"
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textAlignment="center"
+                    android:editable="false"
+                    android:textSize="15dp"
+                    android:maxWidth="120dp"
+                    android:ellipsize="end"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_duration_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_starting_day"
+                android:layout_marginTop="10dp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_add_medication_type_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@color/white"
+                    android:hint="Type de durée"
+                    android:paddingLeft="20dp"
+                    android:editable="false"
+                />
+
+                <Button
+                    android:id="@+id/btn_add_medication_type_duration"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="@id/text_add_medication_type_duration"
+                    app:layout_constraintBottom_toBottomOf="@id/text_add_medication_type_duration"
+                    android:background="@mipmap/ic_sort_down_foreground"
+                    />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_add_medication_type_duration"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_add_medication_duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@color/white"
+                        android:hint="Durée"
+                        android:paddingLeft="20dp"
+                        android:editable="false"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_add_medication_duration_int_value"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:layout_constraintEnd_toStartOf="@id/text_add_medication_duration_value"
+                        app:layout_constraintBottom_toBottomOf="@id/text_add_medication_duration"
+                        android:background="@color/white"
+                        android:textSize="15dp"
+                        android:hint="3"
+                        android:paddingLeft="20dp"
+                        />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_add_medication_duration_value"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/text_add_medication_duration"
+                        android:background="@color/white"
+                        android:paddingLeft="20dp"
+                        android:textSize="15dp"
+                        android:hint="3"
+                        android:editable="false"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_moment_taking"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_duration_type"
+                android:layout_marginTop="10dp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_add_moment_taking"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:editable="false"
+                    android:hint="Moment de la prise"
+                    android:paddingLeft="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_add_moment_taking_value"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_add_moment_taking_scroll"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:maxWidth="120dp"
+                    android:ellipsize="end"
+                    android:textSize="15dp"
+                    android:editable="false"
+                    />
+
+                <Button
+                    android:id="@+id/btn_add_moment_taking_scroll"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@mipmap/ic_sort_down_foreground"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_hours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_moment_taking"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_medication_hours"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:hint="Horaires de prise (Obligatoire)"
+                    android:paddingLeft="20dp"
+                    android:editable="false"
+                    />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_hours1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/text_medication_hours"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_hours"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:listitem="@layout/hour_item"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_add_hours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cl_hours1"
+                    android:layout_marginTop="5dp"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_add_hour"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:background="@color/white"
+                        android:hint="Ajouter une horaire"
+                        android:paddingLeft="60dp"
+                        android:editable="false"
+                        />
+
+                    <ImageView
+                        android:id="@+id/img_add_hour"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginLeft="20dp"
+                        android:src="@mipmap/ic_app_plus_foreground"
+                        />
+
+                    <ImageView
+                        android:id="@+id/img_add_hour_more_than"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:src="@mipmap/ic_more_than_foreground"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_hours_added"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cl_add_hours">
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_add_medication_notes"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_hours"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/white_bottom_radius"
+                android:hint="@string/text_notes"
+                />
+
+            <Button
+                android:id="@+id/btn_validate_adding_medication"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_add_medication_notes"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/green_button_radius"
+                android:text="@string/btn_validate"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
