@@ -1,4 +1,4 @@
-package com.example.globalpharma.Model;
+package com.example.globalpharma.controller;
 
 import android.view.View;
 

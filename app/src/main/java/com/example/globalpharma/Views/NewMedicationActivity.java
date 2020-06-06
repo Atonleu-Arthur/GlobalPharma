@@ -18,6 +18,7 @@ import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -30,6 +31,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -89,7 +91,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class NewMedicationActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, DatePickerDialog.OnDateSetListener,
-        TimePickerDialog.OnTimeSetListener  {
+        TimePickerDialog.OnTimeSetListener {
 
     private ImageView mBtnChooseMedicationForm;
     private ImageView mBtnAddHour;
@@ -146,7 +148,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     //DbHelper
 
-    private int month, year, day,  hour, minute;
+    private int month, year, day, hour, minute;
 
     private long repeatTime;
 
@@ -176,19 +178,19 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     private static final String ID = BaseColumns._ID;
 
-    private static final String KEY_TITLE = "TITLE" ;
+    private static final String KEY_TITLE = "TITLE";
 
-    private static final String KEY_DATE = "DATE" ;
+    private static final String KEY_DATE = "DATE";
 
-    private static final String KEY_TIME = "TIME" ;
+    private static final String KEY_TIME = "TIME";
 
-    private static final String KEY_REPEAT = "REPEAT" ;
+    private static final String KEY_REPEAT = "REPEAT";
 
-    private static final String KEY_REPEAT_NO = "REPEAT_NO" ;
+    private static final String KEY_REPEAT_NO = "REPEAT_NO";
 
-    private static final String KEY_REPEAT_TYPE = "REPEAT_TYPE" ;
+    private static final String KEY_REPEAT_TYPE = "REPEAT_TYPE";
 
-    private static final String KEY_ACTIVE = "ACTIVE" ;
+    private static final String KEY_ACTIVE = "ACTIVE";
 
     private NotificationManagerCompat notificationManager;
 
@@ -200,7 +202,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
     public static final long milMonth = 2592000000L;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_medication);
         getSupportActionBar().hide();
@@ -250,7 +252,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
             mRecyclerView.setVisibility(View.VISIBLE);
     }
 
-    public void initActivity(){
+    public void initActivity() {
         //Graphics elements
         mBtnChooseMedicationForm = findViewById(R.id.btn_add_medication_form);
         mBtnAddHour = findViewById(R.id.img_add_hour);
@@ -270,7 +272,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         mLayoutNewMedication = findViewById(R.id.cl_new_medication);
         mImageViewMedicationPicture = findViewById(R.id.img_add_medication_picture);
         mImageMedicationForm = findViewById(R.id.img_medication_form);
-        mTxtMedicationName= findViewById(R.id.text_add_medication_name);
+        mTxtMedicationName = findViewById(R.id.text_add_medication_name);
         mTxtMedicationForm = findViewById(R.id.text_add_medication_form);
         mTxtMedicationPathology = findViewById(R.id.text_add_medication_pathology);
         mTxtMedicationFrequency = findViewById(R.id.sp_add_frequency_medication);
@@ -311,7 +313,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     //      - - - MANAGEMENT OF PHOTOS - - -
 
-    public void addPhoto(){
+    public void addPhoto() {
         mConstraintLayoutAddPhoto.setOnClickListener(new ConstraintLayout.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -326,15 +328,15 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         });
     }
 
-    public void choosePictureFromGallery(){
+    public void choosePictureFromGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, 1);
     }
 
-    public void takePhotoWithCamera(){
+    public void takePhotoWithCamera() {
         Intent captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(captureImageIntent.resolveActivity(getPackageManager()) != null){
+        if (captureImageIntent.resolveActivity(getPackageManager()) != null) {
             String time = new SimpleDateFormat("ddMMyyy_HHmmss").format(new Date());
             File imageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             try {
@@ -358,7 +360,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //Vérifie si l'image a été bien récupérée
-        if(requestCode == 1 && resultCode == RESULT_OK){
+        if (requestCode == 1 && resultCode == RESULT_OK) {
             //Choix de la photo depuis la galérie
 
             //accès à l'image
@@ -384,8 +386,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
             imageName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
             mTxtAddPhoto.setText(imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("/") + 10) + ".." + imagePath.substring(imagePath.length() - 5));
 
-        }
-        else if(requestCode == RESULT_CODE_TAKING_PHOTO && resultCode == RESULT_OK){
+        } else if (requestCode == RESULT_CODE_TAKING_PHOTO && resultCode == RESULT_OK) {
             //Photo prise avec la caméra
             image = BitmapFactory.decodeFile(imagePath);
 
@@ -394,30 +395,29 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
             imageName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
             mTxtAddPhoto.setText(imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.lastIndexOf("/") + 10) + ".." + imagePath.substring(imagePath.length() - 5, imagePath.length()));
 
-             //uploadPhoto();
+            //uploadPhoto();
         }
     }
 
-    public String getImagePath(Context context, Uri uri){
-        String[] proj = {MediaStore.Images.Media.DATA };
+    public String getImagePath(Context context, Uri uri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
 
-        if(cursor != null){
+        if (cursor != null) {
             int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
-            return  cursor.getString(columnIndex);
+            return cursor.getString(columnIndex);
         }
         return null;
     }
 
-    public void saveImageToGallery(Bitmap image){
+    public void saveImageToGallery(Bitmap image) {
         try {
             File imagesFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Global Pharma");
-            if (!imagesFolder.exists()){
+            if (!imagesFolder.exists()) {
                 imagesFolder.mkdir();
                 MediaStore.Images.Media.insertImage(getContentResolver(), imagePath, imageName, "");
-            }
-            else{
+            } else {
                 Toast.makeText(this, imagesFolder.toString(), Toast.LENGTH_LONG).show();
 
                 MediaStore.Images.Media.insertImage(getContentResolver(), imagesFolder.toString(), imageName, "");
@@ -427,7 +427,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         }
     }
 
-    public void uploadPhoto(){
+    public void uploadPhoto() {
         Uri file = Uri.fromFile(new File(imagePath));
         String fileName = UUID.randomUUID().toString();
 
@@ -436,17 +436,16 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         //return mUploadTaskImage.getSnapshot().getDownloadUrl();
     }
 
-    public String getExtension(Uri uri){
+    public String getExtension(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
 
-
     //      - - - MANAGEMENT OF MEDICATION FORMS - - -
 
-    public void showMedicationForms(){
+    public void showMedicationForms() {
         mBtnChooseMedicationForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -458,30 +457,31 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     //      - - - MANAGEMENT OF MEDICATION FORMS NAMES AND IMAGES - - -
 
-    public String getMedicationFormDataFromIntent(){
-        if(getIntent().hasExtra("SelectedMedicationFormInfo"))
+    public String getMedicationFormDataFromIntent() {
+        if (getIntent().hasExtra("SelectedMedicationFormInfo"))
             return getIntent().getStringExtra("SelectedMedicationFormInfo");
         else
             return null;
     }
 
-    public MedicationForm getMedicationInfos(){
+    public MedicationForm getMedicationInfos() {
         MedicationForm medication = null;
         if (getMedicationFormDataFromIntent() != null) {
             mImageMedicationForm.setVisibility(View.VISIBLE);
             Gson gson = new Gson();
-            Type medicationFormType = new TypeToken<MedicationForm>(){}.getType();
+            Type medicationFormType = new TypeToken<MedicationForm>() {
+            }.getType();
             medication = gson.fromJson(getMedicationFormDataFromIntent(), medicationFormType);
         }
         return medication;
     }
 
-    public void setMedicationFormName(){
+    public void setMedicationFormName() {
         if (getMedicationInfos() != null)
             mTxtMedicationForm.setText(getMedicationInfos().getFormName());
     }
 
-    public void setMedicationFormImage(){
+    public void setMedicationFormImage() {
         if (getMedicationInfos() != null) {
             mImageMedicationForm.setImageResource(getMedicationInfos().getFormImage());
         }
@@ -490,7 +490,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     //      - - - MANAGEMENT OF POP UP - - -
 
-    public void showPopUp(View view, int menu){
+    public void showPopUp(View view, int menu) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.setOnMenuItemClickListener(this);
         popupMenu.inflate(menu);
@@ -499,22 +499,22 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.item_take_photo_with_camera:{
+        switch (item.getItemId()) {
+            case R.id.item_take_photo_with_camera: {
                 takePhotoWithCamera();
                 return true;
             }
-            case R.id.item_choose_from_gallery:{
+            case R.id.item_choose_from_gallery: {
                 choosePictureFromGallery();
                 return true;
             }
-            case R.id.item_daily:{
+            case R.id.item_daily: {
                 getNameFrequency(item);
                 mLayoutFrequencies.setVisibility(View.GONE);
                 repeatType = "daily";
                 return true;
             }
-            case R.id.item_weekly:{
+            case R.id.item_weekly: {
                 getNameFrequency(item);
                 mLayoutFrequencies.setVisibility(View.VISIBLE);
                 mLayoutWeekly.setVisibility(View.VISIBLE);
@@ -525,7 +525,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
                 repeatType = "weekly";
                 return true;
             }
-            case R.id.item_monthly:{
+            case R.id.item_monthly: {
                 getNameFrequency(item);
                 mLayoutFrequencies.setVisibility(View.VISIBLE);
                 mLayoutMonthly.setVisibility(View.VISIBLE);
@@ -536,7 +536,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
                 repeatType = "monthly";
                 return true;
             }
-            case R.id.item_all_the:{
+            case R.id.item_all_the: {
                 getNameFrequency(item);
                 mLayoutFrequencies.setVisibility(View.VISIBLE);
                 mLayoutAllThe.setVisibility(View.VISIBLE);
@@ -547,47 +547,46 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
                 repeatType = "all the";
                 return true;
             }
-            case R.id.item_determinate_duration:{
+            case R.id.item_determinate_duration: {
                 mTxtDurationTypeValue.setText(item.getTitle());
                 mLayoutDuration.setVisibility(View.VISIBLE);
                 return true;
             }
-            case R.id.item_indeterminate_duration:{
+            case R.id.item_indeterminate_duration: {
                 mTxtDurationTypeValue.setText(item.getTitle());
                 mLayoutDuration.setVisibility(View.GONE);
                 return true;
             }
-            case R.id.item_before_eating:{
+            case R.id.item_before_eating: {
                 mTxtTakingMomentValue.setText(item.getTitle());
                 return true;
             }
-            case R.id.item_while_eating:{
+            case R.id.item_while_eating: {
                 mTxtTakingMomentValue.setText(item.getTitle());
                 return true;
             }
-            case R.id.item_after_eating:{
+            case R.id.item_after_eating: {
                 mTxtTakingMomentValue.setText(item.getTitle());
                 return true;
             }
-            case R.id.item_out_of_eating:{
+            case R.id.item_out_of_eating: {
                 mTxtTakingMomentValue.setText(item.getTitle());
                 return true;
             }
-            case R.id.item_whatever:{
+            case R.id.item_whatever: {
                 mTxtTakingMomentValue.setText(item.getTitle());
                 return true;
             }
-            default:{
+            default: {
                 return false;
             }
         }
     }
 
 
-
     //      - - - MANAGEMENT OF MEDICATION FREQUENCIES - - -
 
-    public void showMedicationFrequencies(){
+    public void showMedicationFrequencies() {
         mBtnChooseMedicationFrequency.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -596,23 +595,21 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         });
     }
 
-    public void getNameFrequency(MenuItem item){
+    public void getNameFrequency(MenuItem item) {
         mTxtMedicationFrequency.setText(item.getTitle().toString());
     }
 
 
-
     //      - - - MANAGEMENT OF LAYOUTS - - -
 
-    public void setLayoutInvisible(ConstraintLayout constraintLayout){
+    public void setLayoutInvisible(ConstraintLayout constraintLayout) {
         constraintLayout.setVisibility(View.INVISIBLE);
     }
 
 
-
     //      - - - MANAGEMENT OF DATES - - -
 
-    public void showDatePicker(){
+    public void showDatePicker() {
         mTxtMedicationStartingDateValue.setOnClickListener(new ConstraintLayout.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -632,15 +629,14 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         if (Date.parse(dateString) < Date.parse(mTxtMedicationStartingDateValue.getText().toString())) {
             Toast.makeText(this, getText(R.string.text_error_starting_date_medication), Toast.LENGTH_SHORT).show();
             showDatePicker();
-        }
-        else
+        } else
             mTxtMedicationStartingDateValue.setText(dateString);
     }
 
 
     //      - - - MANAGEMENT OF TYPE OF DURATION OF MEDICATION - - -
 
-    public void showDurationTypes(){
+    public void showDurationTypes() {
         mBtnChooseMedicationDurationType.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -649,7 +645,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         });
     }
 
-    public void showDurationValues(){
+    public void showDurationValues() {
         mTxtMedicationDurationStringValue.setOnClickListener(new TextInputEditText.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -660,7 +656,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     //      - - - MANAGEMENT OF TAKING MOMENTS OF MEDICATION - - -
 
-    public void showMomentsTaking(){
+    public void showMomentsTaking() {
         mBtnChooseMedicationMoment.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -672,7 +668,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     //      - - - MANAGEMENT OF TIMES - - -
 
-    public void showTimePicker(){
+    public void showTimePicker() {
         mBtnAddHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -689,7 +685,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         calendar.set(Calendar.MINUTE, minute);
         hour = hourOfDay;
         this.minute = minute;
-        if(this.minute < 10)
+        if (this.minute < 10)
             this.time = hour + " : 0" + this.minute;
         else
             this.time = hour + " : " + this.minute;
@@ -699,7 +695,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         addAlarm();
     }
 
-    public void showHours(){
+    public void showHours() {
         mBtnAddHourMoreThan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -709,16 +705,15 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
         });
     }
 
-    public void addHour(int hourOfDay, int minute){
-        if(!TextUtils.isEmpty(mTxtMedicationForm.getText().toString())) {
+    public void addHour(int hourOfDay, int minute) {
+        if (!TextUtils.isEmpty(mTxtMedicationForm.getText().toString())) {
             mHourItems.add(new HourItem("Horaire " + (mHourItems.size() + 1), hourOfDay + " : " + minute,
                     mTxtMedicationForm.getText().toString(), "2"));
             mHourAdapter.notifyDataSetChanged();
             mHourAdapter.notifyItemInserted(mHourItems.size());
             mRecyclerView.setAdapter(mHourAdapter);
             initRecyclerViewHours();
-        }
-        else
+        } else
             Toast.makeText(this, "Choose a medication form", Toast.LENGTH_SHORT).show();
 
     }
@@ -726,48 +721,49 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     //      - - - MANAGEMENT OF NEW MEDICATIONS TO STORE - - -
 
-    public void setNewMedicationsToList(List<HourItem> hourItems){
-        if(!hourItems.isEmpty()){
+    public void setNewMedicationsToList(List<HourItem> hourItems) {
+        if (!hourItems.isEmpty()) {
             Medication medication = new Medication(
-                mTxtMedicationName.getText().toString(),
-                mTxtMedicationPathology.getText().toString(),
-                mTxtMedicationForm.getText().toString(),
-                mTxtMedicationStartingDateValue.getText().toString(),
-                mTxtMedicationQuantity.getText().toString(),
-                serializeHour(mHourItems),
-                mTxtTakingMomentValue.getText().toString(),
-                image
+                    mTxtMedicationName.getText().toString(),
+                    mTxtMedicationPathology.getText().toString(),
+                    mTxtMedicationForm.getText().toString(),
+                    mTxtMedicationStartingDateValue.getText().toString(),
+                    mTxtMedicationQuantity.getText().toString(),
+                    serializeHour(mHourItems),
+                    mTxtTakingMomentValue.getText().toString(),
+                    image
             );
 
             mMedications.add(medication);
         }
     }
 
-    public String serializeMedication(List<Medication> medications){
+    public String serializeMedication(List<Medication> medications) {
         Gson gson = new Gson();
         return gson.toJson(medications);
     }
 
-    public String serializeMedication(Medication medication){
+    public String serializeMedication(Medication medication) {
         Gson gson = new Gson();
         return gson.toJson(medication);
     }
 
-    public String serializeHour(List<HourItem> hours){
+    public String serializeHour(List<HourItem> hours) {
         Gson gson = new Gson();
         return gson.toJson(hours);
     }
 
-    public String serializeHour(HourItem hour){
+    public String serializeHour(HourItem hour) {
         Gson gson = new Gson();
         return gson.toJson(hour);
     }
 
-    public void passToMedicationsActivity(){
+    public void passToMedicationsActivity() {
         mBtnValidateAddingMedication.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    /*try {
+                    try {
+                        //setNewMedicationsToList(mHourItems);
                         Intent intent = new Intent(NewMedicationActivity.this, Accueil.class);
                         intent.putExtra("medications List", serializeMedication(mMedications));
                         startActivity(intent);
@@ -775,61 +771,52 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
                     }
                     catch (Exception e){
                         Log.d("Error: ", e.toString());
-                    }*/
-                    //notifyAlarm(1);
-                    setNewMedicationsToList(mHourItems);
-                    //addAlarm(calendar);
+                    }
+                //notifyAlarm(1);
+                //addAlarm(calendar);
             }
         });
     }
 
 
-
     //      - - - MANAGEMENT OF DATABASE - - -
 
 
-
-    public boolean areFieldsCorrect(){
+    public boolean areFieldsCorrect() {
         boolean result = true;
-        if(TextUtils.isEmpty(mTxtMedicationName.getText())){
+        if (TextUtils.isEmpty(mTxtMedicationName.getText())) {
             mTxtMedicationName.setError(getText(R.string.text_error_mediction_name));
             result = false;
-        }
-        else if(TextUtils.isEmpty(mTxtMedicationPathology.getText())){
+        } else if (TextUtils.isEmpty(mTxtMedicationPathology.getText())) {
             mTxtMedicationPathology.setError(getText(R.string.text_error_pathology));
             result = false;
-        }
-        else if(TextUtils.isEmpty(mTxtMedicationName.getText())){
+        } else if (TextUtils.isEmpty(mTxtMedicationName.getText())) {
             mTxtMedicationForm.setError(getText(R.string.text_error_medication_form));
             result = false;
-        }
-        else if(TextUtils.isEmpty(mTxtMedicationQuantity.getText())){
+        } else if (TextUtils.isEmpty(mTxtMedicationQuantity.getText())) {
             mTxtMedicationQuantity.setError(getText(R.string.text_error_medication_quantity));
             result = false;
-        }
-        else if(TextUtils.isEmpty(mTxtMedicationFrequency.getText())){
+        } else if (TextUtils.isEmpty(mTxtMedicationFrequency.getText())) {
             mTxtMedicationFrequency.setError(getText(R.string.text_error_medication_frequency));
             result = false;
-        }
-        else if(TextUtils.isEmpty(mTxtDurationTypeValue.getText())){
+        } else if (TextUtils.isEmpty(mTxtDurationTypeValue.getText())) {
             mTxtDurationTypeValue.setError(getText(R.string.text_error_medication_type_duration));
             result = false;
-        }
-        else if(mTxtDurationTypeValue.getText().equals(getText(R.string.text_determinate_duration))){
-            if(TextUtils.isEmpty(mTxtMedicationDurationIntValue.getText())){
+        } else if (mTxtDurationTypeValue.getText().equals(getText(R.string.text_determinate_duration))) {
+            if (TextUtils.isEmpty(mTxtMedicationDurationIntValue.getText())) {
                 mTxtMedicationDurationIntValue.setError(getText(R.string.text_errore_duration_medication));
                 result = false;
             }
-            if(TextUtils.isEmpty(mTxtMedicationDurationStringValue.getText())){
+            if (TextUtils.isEmpty(mTxtMedicationDurationStringValue.getText())) {
                 mTxtMedicationDurationIntValue.setError(getText(R.string.text_errore_duration_medication));
                 result = false;
             }
         }
-        if(TextUtils.isEmpty(mTxtTakingMomentValue.getText())){
+        if (TextUtils.isEmpty(mTxtTakingMomentValue.getText())) {
             mTxtTakingMomentValue.setError(getText(R.string.text_error_moment_taking_medication));
             result = false;
         }
-        if(HoursActivity.mHourItems.isEmpty()){
+        if (HoursActivity.mHourItems.isEmpty()) {
             Toast.makeText(this, "Veuillez renseigner les horaires de prise", Toast.LENGTH_SHORT).show();
             result = false;
         }
@@ -837,18 +824,17 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
     }
 
 
-
     //      --- ALARMS ---
 
-    private void deleteAlarm(){
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+    private void deleteAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, 0);
 
         alarmManager.cancel(pendingIntent);
     }
 
-    private void addAlarm(){
+    private void addAlarm() {
         /*AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, 0);
@@ -860,25 +846,25 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 */
 
         //int days = 0;
-        if(!mMedications.isEmpty()) {
+        if (!mMedications.isEmpty()) {
             for (Medication medication :
                     mMedications) {
                 int days = 0;
                 for (HourItem hour :
                         medication.getHourItem()) {
                     days += Integer.valueOf(hour.getQuantity());
-                    String endingDate = String.valueOf(Date.parse(mTxtMedicationStartingDateValue.getText().toString()) + days*1000);
+                    String endingDate = String.valueOf(Date.parse(mTxtMedicationStartingDateValue.getText().toString()) + days * 1000);
 
 
                 }
             }
         }
 
-       // Alarm alarm = new Alarm(mTxtMedicationStartingDateValue.getText().toString(),  endingDate, repeatTime, )
+        // Alarm alarm = new Alarm(mTxtMedicationStartingDateValue.getText().toString(),  endingDate, repeatTime, )
     }
 
-    private void fixRepeatTime(){
-        switch (repeatType.toLowerCase()){
+    private void fixRepeatTime() {
+        switch (repeatType.toLowerCase()) {
             case "all the":
                 repeatTime = Integer.parseInt(noRepeat) * milHour;
                 break;
@@ -897,7 +883,7 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
 
     }
 
-    private void notifyAlarm(int id){
+    private void notifyAlarm(int id) {
         String title = mTxtMedicationName.getText().toString() + " - " + mTxtMedicationPathology.getText().toString();
         String content = mTxtTakingMomentValue.getText().toString();
         NotificationHelper notificationHelper = new NotificationHelper(getApplicationContext());
@@ -931,7 +917,5 @@ public class NewMedicationActivity extends AppCompatActivity implements PopupMen
     public void onBackPressed() {
         super.onBackPressed();
     }
-
-    public void readSpecificData(String name)
 
 }

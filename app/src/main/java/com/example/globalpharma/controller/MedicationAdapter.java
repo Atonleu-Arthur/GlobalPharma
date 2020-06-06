@@ -1,6 +1,5 @@
-package com.example.globalpharma.Views;
+package com.example.globalpharma.controller;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

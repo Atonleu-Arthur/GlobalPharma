@@ -12,6 +12,7 @@ import com.example.globalpharma.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Medication implements Parcelable {
@@ -20,17 +21,63 @@ public class Medication implements Parcelable {
     private String mTreatedPart;
     private String mMedicationForm;
     private String mMedicationQuantityText;
+    private String mStartingDate;
+    private String mTreatmentDuration;
+    private String mTakingMoment;
+    private String mTotalQuantity;
+    private List<HourItem> mHourItems;
     private String mMedicationHour;
     private String mDownloadUrl;
+    private String mSerializedHourItem;
     @Nullable private String mMedicationPrecision;
     @Nullable private String mMissingTime;
     private int mMedicationImage;
+    private int mTotalMedecinesPerDay;
     private Bitmap mMedicationImageBitmap;
 
     public Medication() {
         this.mId = UUID.randomUUID().toString();
     }
 
+    //Constructeur pour un item dans la liste de traitements
+    public Medication(String medicationName, String treatedPart,
+                      String medicationForm, String startingDate,
+                      String totalQuantity, List<HourItem> hourItems,
+                      @Nullable String takingMoment,
+                      @Nullable Bitmap medicationImageBitmap) {
+        mId = UUID.randomUUID().toString().replace("-", "");
+        mMedicationName = medicationName;
+        mTreatedPart = treatedPart;
+        mHourItems = hourItems;
+        mMedicationForm = medicationForm;
+        for (HourItem hourItem :
+                mHourItems) {
+            mTotalMedecinesPerDay += Integer.valueOf(hourItem.getQuantity());
+        }
+        mTreatmentDuration = String.valueOf(Integer.valueOf(totalQuantity) / mTotalMedecinesPerDay);
+        mStartingDate = startingDate;
+        mTotalQuantity = totalQuantity;
+        mTakingMoment = takingMoment;
+        mMedicationImageBitmap = medicationImageBitmap;
+    }
+
+    public Medication(String medicationName, String treatedPart,
+                      String medicationForm, String startingDate,
+                      String totalQuantity, String hourItem,
+                      @Nullable String takingMoment,
+                      @Nullable Bitmap medicationImageBitmap) {
+        mId = UUID.randomUUID().toString().replace("-", "");
+        mMedicationName = medicationName;
+        mTreatedPart = treatedPart;
+        mMedicationForm = medicationForm;
+        mStartingDate = startingDate;
+        mTotalQuantity = totalQuantity;
+        mSerializedHourItem = hourItem;
+        mTakingMoment = takingMoment;
+        mMedicationImageBitmap = medicationImageBitmap;
+    }
+
+    //Constructeur avec pour image un bitmap
     public Medication(String id, String medicationName, String treatedPart, String medicationForm, String medicationQuantityText, String medicationHour, String downloadUrl, @Nullable String medicationPrecision, @Nullable String missingTime) {
         mId = id;
         mMedicationName = medicationName;
@@ -43,7 +90,7 @@ public class Medication implements Parcelable {
         mMissingTime = missingTime;
     }
 
-    public Medication(String medicationName, String treatedPart, String medicationForm,
+    /*public Medication(String medicationName, String treatedPart, String medicationForm,
                       String medicationQuantityText, String medicationHour,
                       @Nullable String medicationPrecision, @Nullable String missingTime,
                       Bitmap medicationImageBitmap) {
@@ -56,8 +103,10 @@ public class Medication implements Parcelable {
         mMedicationPrecision = medicationPrecision;
         mMissingTime = missingTime;
         mMedicationImageBitmap = medicationImageBitmap;
-    }
+    }*/
 
+
+    //Constructeur avec pour image son resId
     public Medication(String medicationName, String treatedPart, String medicationForm,
                       String medicationQuantity, String medicationHour,
                       @Nullable String medicationPrecision, @Nullable String missingTime,
@@ -150,6 +199,22 @@ public class Medication implements Parcelable {
 
     public void setMedicationHour(String medicationHour) {
         mMedicationHour = medicationHour;
+    }
+
+    public String getStartingDate() {
+        return mStartingDate;
+    }
+
+    public String getTakingMoment() {
+        return mTakingMoment;
+    }
+
+    public String getTotalQuantity() {
+        return mTotalQuantity;
+    }
+
+    public List<HourItem> getHourItem() {
+        return mHourItems;
     }
 
     @Nullable

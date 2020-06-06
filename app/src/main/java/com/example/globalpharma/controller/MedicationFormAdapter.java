@@ -1,4 +1,4 @@
-package com.example.globalpharma.Views;
+package com.example.globalpharma.controller;
 
 import android.content.Context;
 import android.os.Parcel;

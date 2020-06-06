@@ -72,4 +72,6 @@
     <string name="text_error_medication_type_duration">Veuillez renseigner le type de durée</string>
     <string name="text_errore_duration_medication">Veuillez renseigner la durée de la prise du médicament</string>
     <string name="text_error_moment_taking_medication">Veuillez renseigner le moment de la journée de la prise</string>
+    <string name="notify_btn_taken">Pris</string>
+    <string name="notify_btn_no_taken">Non pris</string>
 </resources>

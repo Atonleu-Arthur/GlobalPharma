@@ -2,8 +2,6 @@ package com.example.globalpharma.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,28 +9,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Fragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.globalpharma.Model.HourItem;
 import com.example.globalpharma.Model.Medication;
 import com.example.globalpharma.Model.MedicationPerDay;
-import com.example.globalpharma.Model.MedicationPerDayAdapter;
+import com.example.globalpharma.controller.MedicationPerDayAdapter;
 import com.example.globalpharma.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.Notification.EXTRA_NOTIFICATION_ID;
 
 public class Accueil extends AppCompatActivity {
 
@@ -110,38 +105,33 @@ public class Accueil extends AppCompatActivity {
     private void initRecyclerViewMedications() {
         mMedicationsPerDayList = new ArrayList<>();
         mMedicationList = new ArrayList<>();
+        
+        setNewMedications();
 
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
-        mMedicationList.add(new Medication("A", "b", "c", "d", "n", null, null, R.mipmap.ic_delete_medication_foreground));
+        int days = 0;
+        if(!mMedicationList.isEmpty()) {
+            for (Medication medication:
+                 mMedicationList) {
+                for (HourItem hour :
+                        medication.getHourItem()) {
+                    days += Integer.valueOf(hour.getQuantity());
+                }
+                if (days > 0)
+                    break;
+            }
+            java.util.Date startingDate = Date.valueOf(mMedicationList.get(0).getStartingDate());
+            java.util.Date endingDate = new Date(startingDate.getDate() + days);
 
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
-        mMedicationsPerDayList.add(new MedicationPerDay("Lundi, 20 Avril 2020", mMedicationList));
+            for (java.util.Date j = startingDate; j == endingDate; j.setDate(j.getDate() + 1)) {
+                mMedicationsPerDayList.add(new MedicationPerDay(j.toString(), mMedicationList));
+            }
+        }
 
         mAdapter = new MedicationPerDayAdapter(mMedicationsPerDayList, Accueil.this);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerViewMedications.setAdapter(mAdapter);
         mRecyclerViewMedications.setLayoutManager(mLinearLayoutManager);
+
     }
 
     private void passToNewMedicationActivity() {

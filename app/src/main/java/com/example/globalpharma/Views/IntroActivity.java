@@ -146,7 +146,7 @@ public class IntroActivity extends AppCompatActivity {
 
                 Intent i = new Intent(IntroActivity.this, Accueil.class);
                 startActivity(i);
-
+                finish();
 
             }
         });

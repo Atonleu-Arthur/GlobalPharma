@@ -29,22 +29,6 @@ public class HoursActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rv_hours1);
 
         mHourItems = new ArrayList<>();
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
-        mHourItems.add(new HourItem("Horaire 1", "13:45", "Gellule", "04"));
 
         Intent intent = getIntent();
         if(intent.hasExtra("hour")){

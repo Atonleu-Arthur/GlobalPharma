@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.globalpharma.Model.Authentication;
+import com.example.globalpharma.Model.Profile;
 import com.example.globalpharma.Model.Provider;
 import com.example.globalpharma.Model.User;
 import com.example.globalpharma.R;
@@ -23,8 +25,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -53,9 +57,12 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView mTxtConfirm;
     private TextView mTxtName;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private PhoneAuthCredential credential;
+    private FirebaseUser currentUser ;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private FirebaseFirestore mDatabase;
+    private FirebaseUser mUser;
     private Provider mProvider;
     private Random mRandom;
 
@@ -66,6 +73,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         getSupportActionBar().hide();
 
+        initView();
+
         initActivity();
 
         passToLoginInterface();
@@ -74,28 +83,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-    }
-
-    //Initializing graphics elements
     private void initActivity() {
-        btnconnect = (Button) findViewById(R.id.btnConnect);
-        mBtnSubmit = findViewById(R.id.btnSubmit);
-        mTxtPhone = findViewById(R.id.txtEmail);
-        mTxtPassword = findViewById(R.id.txtPassword);
-        mTxtConfirm = findViewById(R.id.txtConfirmPassword);
-        mTxtName = findViewById(R.id.txtName);
-
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_register, new Fragment())
-                .commit()
-        ;
 
         mProvider = new Provider();
 
@@ -108,6 +97,33 @@ public class RegisterActivity extends AppCompatActivity {
 
         //initialisation de l'authentificateur
         mAuth = FirebaseAuth.getInstance();
+
+        mUser = mAuth.getCurrentUser();
+    }
+
+    //Initializing graphics elements
+    private void initView(){
+        btnconnect = (Button) findViewById(R.id.btnConnect);
+        mBtnSubmit = findViewById(R.id.btnSubmit);
+        mTxtPhone = findViewById(R.id.txtEmail);
+        mTxtPassword = findViewById(R.id.txtPassword);
+        mTxtConfirm = findViewById(R.id.txtConfirmPassword);
+        mTxtName = findViewById(R.id.txtName);
+
+        getFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_register, new Fragment())
+                .commit()
+        ;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+
+
+
     }
 
     public void passToLoginInterface(){
@@ -126,14 +142,8 @@ public class RegisterActivity extends AppCompatActivity {
         mBtnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifyFieldsState();
-
-                setAuthWithEmail();
-
-                emptyInputEditText();
-
-                //setAuthWithPhoneNumber(mTxtPhone.getText().toString());
-                //addUser(mTxtName.getText().toString(), mTxtPhone.getText().toString(), "Male", null, mTxtPassword.getText().toString() );
+                //setAuthWithEmail();
+                setAuthWithPhoneNumber();
             }
         });
     }
@@ -155,25 +165,30 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //Clear all the fields
-    private void emptyInputEditText() {
+    private void clearView() {
         mTxtPhone.setText(null);
         mTxtConfirm.setText(null);
         mTxtPassword.setText(null);
         mTxtName.setText(null);
     }
 
-    //Add user to firebase by signing in
+    //Sign up user by email
     private void setAuthWithEmail(){
         mAuth.createUserWithEmailAndPassword(mTxtPhone.getText().toString(), mTxtPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
+
                             if(user.isEmailVerified()){
-                                Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                addUserToDatabase(new User(mTxtPhone.getText().toString(), mTxtPassword.getText().toString()));
+                               //Profile profile = new Profile(mTxtPhone.getText().toString(), mTxtPassword.getText().toString());
+                                Toast.makeText(RegisterActivity.this, "Ok", Toast.LENGTH_LONG).show();
+                                /*if(verifyEmailAddress() == true){
+                                    profile.saveUserToFirestore(profile);
+                                    addUserToDatabase(new User(mTxtPhone.getText().toString(), mTxtPassword.getText().toString()));
+                                }*/
+                                sendEmailLink();
                             }
 
                         }
@@ -186,31 +201,67 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
+    private void sendEmailLink(){
+        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                        .setUrl("https://www.example.com/finishSignUp?cartId=1234")
+                        .setHandleCodeInApp(true)
+                        .setIOSBundleId("com.example.ios")
+                        .setAndroidPackageName(
+                                "com.example.globalpharma",
+                                true,
+                                "12"    )
+                        .build();
+
+        mAuth.sendSignInLinkToEmail(mTxtPhone.getText().toString(), actionCodeSettings)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, "Sent email", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    boolean result = false;
+    private boolean verifyEmailAddress(){
+        mUser.sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(RegisterActivity.this, "Mail sent", Toast.LENGTH_SHORT).show();
+                            result = true;
+                        }
+                        else
+                            Toast.makeText(RegisterActivity.this, "Mail not sent", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        return result;
+    }
+
+
+    //          --- PHONE NUMBER ---
+
     //Register with phone number
-    private void setAuthWithPhoneNumber(PhoneAuthCredential authWithPhoneNumber){
+    private void setAuthWithPhoneNumber(){
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                Toast.makeText(RegisterActivity.this, "Validé", Toast.LENGTH_SHORT).show();
-
+                registrationWithCredential(phoneAuthCredential);
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
+                Log.d("Error ", "Error: " + e.toString());
                 Toast.makeText(RegisterActivity.this, "Ndem", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
-                Toast.makeText(RegisterActivity.this, "Code sent", Toast.LENGTH_SHORT).show();
-                mAuth.signInWithCredential(authWithPhoneNumber)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            }
-                        });
+                Toast.makeText(RegisterActivity.this, s, Toast.LENGTH_LONG).show();
+                Log.d("Code ", "Error: " + s);
             }
         };
 
@@ -222,10 +273,27 @@ public class RegisterActivity extends AppCompatActivity {
                 mCallbacks);
     }
 
-    private void sendCodeSms(String mPhoneNumber, int code){
-        code = mRandom.nextInt((999999-100000)+1)+1000000;
-        //PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.get
+    private void registrationWithCredential(PhoneAuthCredential credential){
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(RegisterActivity.this, Accueil.class));
+                            // ...
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                            }
+                        }
+                    }
+                });
     }
+
+    private void sendCodeSms(String mPhoneNumber, int code){
+    }
+
+    //          --- MANAGE USERS ---
 
     //Verify is user is already logged in
     public boolean isLoggedIn(){
@@ -245,18 +313,13 @@ public class RegisterActivity extends AppCompatActivity {
             mAuth.signOut();
     }
 
-    //Unsuscribe the application
-    private void deleteAccount(FirebaseAuth mAuth, FirebaseUser user){
-        user = mAuth.getCurrentUser();
-
-    }
-
     private void addUserToDatabase(User userAdded){
         HashMap<String, Object> user = new HashMap<>();
-        user.put("user_id", UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
-        user.put("name", userAdded.getName());
-        user.put("email", userAdded.getPhone());
-        user.put("password", userAdded.getPassword());
+        user.put("id", UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
+        mDatabase.collection("user")
+                .add(user)
+                .isSuccessful()
+                ;
     }
 
     public void hashPasswordToMD5(String password){
