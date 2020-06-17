@@ -6,9 +6,13 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.example.globalpharma.R;
 
@@ -17,7 +21,7 @@ import com.example.globalpharma.R;
  * Use the {@link ProfilFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfilFragment extends Fragment {
+public class ProfilFragment extends Fragment implements PopupMenu.OnMenuItemClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,18 +53,18 @@ public class ProfilFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-
-
         }
     }
 
     Button Btn_modifier;
+    ImageView Btn_menu;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,17 +73,38 @@ public class ProfilFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_profil, container, false);
 
         Btn_modifier = (Button)v.findViewById(R.id.button_modifier);
-
+        Btn_menu = (ImageView) v.findViewById(R.id.btn_menu);
 
         Btn_modifier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), EditProfileActivity.class);
                 startActivity(i);
-
             }
         });
+
+        Btn_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getContext(), v);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return false;
+                    }
+                });
+                popup.inflate(R.menu.menu_profil);
+                popup.show();
+            }
+        });
+
+
         // Inflate the layout for this fragment
         return v;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        return false;
     }
 }

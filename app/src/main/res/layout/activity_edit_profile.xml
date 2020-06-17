@@ -32,6 +32,51 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="40dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/txt_nom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile" />
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@color/backgroundActivity"
+            android:gravity="center"
+            android:text="Changer la photo de profil"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/vert"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="383dp"
@@ -128,54 +173,10 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/radius"
             android:text="Enregistrer les modifications"
+            android:textSize="18sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/blanc" />
 
     </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_marginTop="40dp"
-            app:cardCornerRadius="30dp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/txt_nom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/profile" />
-
-        </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/btn_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:background="@color/backgroundActivity"
-            android:gravity="center"
-            android:text="Changer la photo de profil"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/vert"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
