@@ -1,122 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    android:layout_marginBottom="10dp"
-    >
-
-    <TextView
-        android:id="@+id/text_hour_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/img_delete_hour"
-        android:layout_marginLeft="20dp"
-        android:text="Horaire 1"
-        android:textSize="15dp"
-        />
-
-    <ImageView
-        android:id="@+id/img_delete_hour"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="20dp"
-        android:src="@mipmap/ic_delete_medication_foreground"
-        android:layout_marginTop="8dp"
-        />
-
-    <ImageView
-        android:id="@+id/img_edit_hour"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintEnd_toStartOf="@id/img_delete_hour"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="5dp"
-        android:src="@mipmap/ic_edit_medication_foreground"
-        android:layout_marginTop="5dp"
-        />
-
-    <TextView
-        android:id="@+id/text_hour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/text_hour_title"
-        app:layout_constraintTop_toBottomOf="@id/text_hour_title"
-        android:text="@string/text_hour"
-        android:textSize="15dp"
-        android:layout_marginTop="10dp"
-        />
-
-    <TextView
-        android:id="@+id/text_hour_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/text_hour"
-        app:layout_constraintTop_toBottomOf="@id/text_hour_title"
-        android:text="12:00 AM"
-        android:textSize="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="5dp"
-        />
-
-    <TextView
-        android:id="@+id/text_quantity_in_hour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/text_form_medication_in_hour"
-        app:layout_constraintTop_toBottomOf="@id/text_hour"
-        android:text="1"
-        android:textSize="15dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        />
-
-    <TextView
-        android:id="@+id/text_form_medication_in_hour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/img_add_quantity_in_hour"
-        app:layout_constraintTop_toBottomOf="@id/text_hour"
-        android:text="comprimé"
-        android:textSize="15dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        />
-
-    <ImageView
-        android:id="@+id/img_add_quantity_in_hour"
-        android:layout_width="20dp"
-        android:layout_height="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/img_substract_quantity_in_hour"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="20dp"
-        android:src="@mipmap/ic_button_up_foreground"
-        android:layout_marginTop="5dp"
-        android:background="@color/backgroundActivity"
-        />
-
-    <ImageView
-        android:id="@+id/img_substract_quantity_in_hour"
-        android:layout_width="20dp"
-        android:layout_height="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/text_form_medication_in_hour"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="20dp"
-        android:src="@mipmap/ic_sort_down_foreground"
-        android:layout_marginTop="5dp"
-        android:background="@color/backgroundActivity"
-        />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+<?xml version="1.0" encoding="utf-8"?><androidx.constraintlayout.widget.ConstraintLayout    xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"    android:layout_height="wrap_content"    xmlns:app="http://schemas.android.com/apk/res-auto"    android:background="@color/white"    android:layout_marginBottom="10dp"    >    <TextView        android:id="@+id/text_hour_title"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        app:layout_constraintStart_toStartOf="parent"        app:layout_constraintTop_toTopOf="@id/img_delete_hour"        android:layout_marginLeft="20dp"        android:text="Horaire 1"        android:textSize="15dp"        />    <ImageView        android:id="@+id/img_delete_hour"        android:layout_width="30dp"        android:layout_height="30dp"        app:layout_constraintEnd_toEndOf="parent"        app:layout_constraintTop_toTopOf="parent"        android:layout_marginRight="20dp"        android:src="@mipmap/ic_delete_medication_foreground"        android:layout_marginTop="8dp"        />    <ImageView        android:id="@+id/img_edit_hour"        android:layout_width="30dp"        android:layout_height="30dp"        app:layout_constraintEnd_toStartOf="@id/img_delete_hour"        app:layout_constraintTop_toTopOf="parent"        android:layout_marginRight="5dp"        android:visibility="gone"        android:src="@mipmap/ic_edit_medication_foreground"        android:layout_marginTop="5dp"        />    <TextView        android:id="@+id/text_hour"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        app:layout_constraintStart_toStartOf="@id/text_hour_title"        app:layout_constraintTop_toBottomOf="@id/text_hour_title"        android:text="@string/text_hour"        android:textSize="15dp"        android:layout_marginTop="10dp"        />    <TextView        android:id="@+id/text_hour_value"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        app:layout_constraintStart_toEndOf="@id/text_hour"        app:layout_constraintTop_toBottomOf="@id/text_hour_title"        android:text="12:00 AM"        android:textSize="15dp"        android:layout_marginTop="10dp"        android:layout_marginStart="5dp"        />    <TextView        android:id="@+id/text_quantity_in_hour"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        app:layout_constraintEnd_toStartOf="@id/text_form_medication_in_hour"        app:layout_constraintTop_toBottomOf="@id/text_hour"        android:text="1"        android:textSize="15dp"        android:layout_marginRight="5dp"        android:layout_marginTop="10dp"        android:paddingLeft="5dp"        android:paddingRight="5dp"        />    <TextView        android:id="@+id/text_form_medication_in_hour"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        app:layout_constraintEnd_toStartOf="@id/img_add_quantity_in_hour"        app:layout_constraintTop_toBottomOf="@id/text_hour"        android:text="comprimé"        android:textSize="15dp"        android:layout_marginRight="5dp"        android:layout_marginTop="10dp"        android:paddingLeft="5dp"        android:paddingRight="5dp"        />    <ImageView        android:id="@+id/img_add_quantity_in_hour"        android:layout_width="20dp"        android:layout_height="10dp"        app:layout_constraintEnd_toEndOf="parent"        app:layout_constraintBottom_toTopOf="@id/img_substract_quantity_in_hour"        android:layout_marginLeft="5dp"        android:layout_marginRight="20dp"        android:src="@mipmap/ic_button_up_foreground"        android:layout_marginTop="5dp"        android:background="@color/backgroundActivity"        />    <ImageView        android:id="@+id/img_substract_quantity_in_hour"        android:layout_width="20dp"        android:layout_height="10dp"        app:layout_constraintEnd_toEndOf="parent"        app:layout_constraintBottom_toBottomOf="@id/text_form_medication_in_hour"        android:layout_marginLeft="5dp"        android:layout_marginRight="20dp"        android:src="@mipmap/ic_sort_down_foreground"        android:layout_marginTop="5dp"        android:background="@color/backgroundActivity"        /></androidx.constraintlayout.widget.ConstraintLayout>

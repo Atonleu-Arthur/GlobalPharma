@@ -46,6 +46,9 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <service android:name=".controller.MedicationJobService"
+                 android:permission="android.permission.BIND_JOB_SERVICE"/>
+
         <receiver android:name=".controller.NotificationReceiver"/>
         <receiver android:name=".controller.AlertReceiver"/>
         <receiver android:name=".controller.AlarmThread" />

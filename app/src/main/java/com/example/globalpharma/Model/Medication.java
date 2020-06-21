@@ -4,11 +4,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
-import com.example.globalpharma.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -25,6 +23,7 @@ public class Medication implements Parcelable {
     private String mTreatmentDuration;
     private String mTakingMoment;
     private String mTotalQuantity;
+    private int mTotalMedecines;
     private List<HourItem> mHourItems;
     private String mMedicationHour;
     private String mDownloadUrl;
@@ -106,6 +105,21 @@ public class Medication implements Parcelable {
     }*/
 
 
+
+    public Medication(Bitmap image, String name, String pathology, String form, int totalQuantity, int totalPerDay, String hour, int quantityPerday, @Nullable String precision, String startingDate ){
+        mId = UUID.randomUUID().toString().replace("-", "");
+        mMedicationImageBitmap = image;
+        mMedicationName = name;
+        mTreatedPart = pathology;
+        mMedicationForm = form;
+        mTreatmentDuration = String.valueOf(totalQuantity%totalPerDay != 0 ? totalQuantity/totalPerDay + 1 : totalQuantity/totalPerDay);
+        mMedicationHour = hour;
+        mMedicationQuantityText = String.valueOf(quantityPerday);
+        mMedicationPrecision = precision;
+        mStartingDate = startingDate;
+    }
+
+
     //Constructeur avec pour image son resId
     public Medication(String medicationName, String treatedPart, String medicationForm,
                       String medicationQuantity, String medicationHour,
@@ -153,14 +167,6 @@ public class Medication implements Parcelable {
         mId = id;
     }
 
-    public String getDownloadUrl() {
-        return mDownloadUrl;
-    }
-
-    public void setDownloadUrl(String downloadUrl) {
-        mDownloadUrl = downloadUrl;
-    }
-
     public String getMedicationName() {
         return mMedicationName;
     }
@@ -185,12 +191,60 @@ public class Medication implements Parcelable {
         mMedicationForm = medicationForm;
     }
 
-    public String getMedicationQuantity() {
+    public String getMedicationQuantityText() {
         return mMedicationQuantityText;
     }
 
-    public void setMedicationQuantity(String medicationQuantityText) {
+    public void setMedicationQuantityText(String medicationQuantityText) {
         mMedicationQuantityText = medicationQuantityText;
+    }
+
+    public String getStartingDate() {
+        return mStartingDate;
+    }
+
+    public void setStartingDate(String startingDate) {
+        mStartingDate = startingDate;
+    }
+
+    public String getTreatmentDuration() {
+        return mTreatmentDuration;
+    }
+
+    public void setTreatmentDuration(String treatmentDuration) {
+        mTreatmentDuration = treatmentDuration;
+    }
+
+    public String getTakingMoment() {
+        return mTakingMoment;
+    }
+
+    public void setTakingMoment(String takingMoment) {
+        mTakingMoment = takingMoment;
+    }
+
+    public String getTotalQuantity() {
+        return mTotalQuantity;
+    }
+
+    public void setTotalQuantity(String totalQuantity) {
+        mTotalQuantity = totalQuantity;
+    }
+
+    public int getTotalMedecines() {
+        return mTotalMedecines;
+    }
+
+    public void setTotalMedecines(int totalMedecines) {
+        mTotalMedecines = totalMedecines;
+    }
+
+    public List<HourItem> getHourItems() {
+        return mHourItems;
+    }
+
+    public void setHourItems(List<HourItem> hourItems) {
+        mHourItems = hourItems;
     }
 
     public String getMedicationHour() {
@@ -201,20 +255,20 @@ public class Medication implements Parcelable {
         mMedicationHour = medicationHour;
     }
 
-    public String getStartingDate() {
-        return mStartingDate;
+    public String getDownloadUrl() {
+        return mDownloadUrl;
     }
 
-    public String getTakingMoment() {
-        return mTakingMoment;
+    public void setDownloadUrl(String downloadUrl) {
+        mDownloadUrl = downloadUrl;
     }
 
-    public String getTotalQuantity() {
-        return mTotalQuantity;
+    public String getSerializedHourItem() {
+        return mSerializedHourItem;
     }
 
-    public List<HourItem> getHourItem() {
-        return mHourItems;
+    public void setSerializedHourItem(String serializedHourItem) {
+        mSerializedHourItem = serializedHourItem;
     }
 
     @Nullable
@@ -226,11 +280,12 @@ public class Medication implements Parcelable {
         mMedicationPrecision = medicationPrecision;
     }
 
+    @Nullable
     public String getMissingTime() {
         return mMissingTime;
     }
 
-    public void setMissingTime(String missingTime) {
+    public void setMissingTime(@Nullable String missingTime) {
         mMissingTime = missingTime;
     }
 
@@ -240,6 +295,14 @@ public class Medication implements Parcelable {
 
     public void setMedicationImage(int medicationImage) {
         mMedicationImage = medicationImage;
+    }
+
+    public int getTotalMedecinesPerDay() {
+        return mTotalMedecinesPerDay;
+    }
+
+    public void setTotalMedecinesPerDay(int totalMedecinesPerDay) {
+        mTotalMedecinesPerDay = totalMedecinesPerDay;
     }
 
     public Bitmap getMedicationImageBitmap() {

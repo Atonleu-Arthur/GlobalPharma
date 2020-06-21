@@ -4,73 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/beige"
-    tools:context=".Views.Accueil">
-    
-    <fragment
-        android:id="@+id/fragment_header_taking_medication"
+    android:background="@color/backgroundActivity"
+    android:layout_marginBottom="10dp"
+    tools:context=".Views.Accueil"
+    >
+
+
+
+  <fragment
+      android:visibility="gone"
+      android:id="@+id/fragment_header_taking_medication"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toTopOf="parent"
+      android:name="com.example.globalpharma.Views.HeaderFragment"
+      />
+
+  <ScrollView
+      android:id="@+id/scrollview_taking_medication"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_constraintTop_toBottomOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/scrollview_taking_medication"
-        android:name="com.example.globalpharma.Views.HeaderFragment"
-     />
+        android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/scrollview_taking_medication"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_header_taking_medication">
+      <Button
+          android:id="@+id/btn_add"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          android:text="Add" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        >
-            <TextView
-                android:id="@+id/text_my_treatments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/btn_add_medication"
-                android:text="@string/text_my_treatment"
-                android:textColor="@color/textcolor"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                android:paddingLeft="15dp"
-                />
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rv_medicines"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toBottomOf="@id/btn_add"
+          app:layout_constraintStart_toStartOf="parent"
+          tools:listitem="@layout/medicine_item"
+          />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <ImageView
-                android:id="@+id/btn_add_medication"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@mipmap/ic_add_treatment_foreground"
-                android:layout_marginRight="25dp"
-            />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_add_medication"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <fragment
-                    android:id="@+id/fragment_medication"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:name="com.example.globalpharma.Views.MedicationFragment"
-                />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
+  </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

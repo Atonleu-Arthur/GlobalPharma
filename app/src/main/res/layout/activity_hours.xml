@@ -9,25 +9,25 @@
     >
 
     <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_hours1"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/hour_item"
-            />
+            android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_hours1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/hour_item"
+                />
 
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

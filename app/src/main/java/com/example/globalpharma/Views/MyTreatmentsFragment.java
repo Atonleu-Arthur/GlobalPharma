@@ -18,16 +18,16 @@ import com.example.globalpharma.R;
 public class MyTreatmentsFragment extends Fragment {
 
 
-    public MyTreatmentsFragment() {
-        // Required empty public constructor
-    }
+  public MyTreatmentsFragment() {
+    // Required empty public constructor
+  }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_treatments, container, false);
-    }
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
+    return inflater.inflate(R.layout.fragment_my_treatments, container, false);
+  }
 
 }

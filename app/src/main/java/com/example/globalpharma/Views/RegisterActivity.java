@@ -65,6 +65,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseUser mUser;
     private Provider mProvider;
     private Random mRandom;
+    private String mVerificationid;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,9 +261,11 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                super.onCodeSent(s, forceResendingToken);
+
                 Toast.makeText(RegisterActivity.this, s, Toast.LENGTH_LONG).show();
-                Log.d("Code ", "Error: " + s);
+                Log.d("Code ", "Code: " + s);
+                mResendToken = forceResendingToken;
+                mVerificationid = s;
             }
         };
 
@@ -282,8 +286,10 @@ public class RegisterActivity extends AppCompatActivity {
                             startActivity(new Intent(RegisterActivity.this, Accueil.class));
                             // ...
                         } else {
+                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+
+                                //startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                             }
                         }
                     }

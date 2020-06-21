@@ -6,6 +6,9 @@ import android.os.Parcelable;
 public class HourItem implements Parcelable {
     private String mTitle;
     private String mHourValue;
+    private String mHour;
+    private String mMinute;
+    private String mSecond;
     private String mForm;
     private String mQuantity;
 

@@ -3,31 +3,31 @@ package com.example.globalpharma.Model;
 import java.util.List;
 
 public class MedicationPerDay {
-    private  String date;
-    private List<Medication> medicationsOfDay;
+  private  String date;
+  private List<Medication> medicationsOfDay;
 
-    public MedicationPerDay() {
-    }
+  public MedicationPerDay() {
+  }
 
-    public MedicationPerDay(String date, List<Medication> medicationsOfDay) {
-        this.date = date;
-        this.medicationsOfDay = medicationsOfDay;
-    }
+  public MedicationPerDay(String date, List<Medication> medicationsOfDay) {
+    this.date = date;
+    this.medicationsOfDay = medicationsOfDay;
+  }
 
-    public String getDate() {
-        return date;
-    }
+  public String getDate() {
+    return date;
+  }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+  public void setDate(String date) {
+    this.date = date;
+  }
 
-    public List<Medication> getMedicationsOfDay() {
-        return medicationsOfDay;
-    }
+  public List<Medication> getMedicationsOfDay() {
+    return medicationsOfDay;
+  }
 
-    public void setMedicationsOfDay(List<Medication> medicationsOfDay) {
-        this.medicationsOfDay = medicationsOfDay;
-    }
+  public void setMedicationsOfDay(List<Medication> medicationsOfDay) {
+    this.medicationsOfDay = medicationsOfDay;
+  }
 
 }

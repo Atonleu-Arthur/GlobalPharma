@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundActivity">
+
+    <TextView
+        android:id="@+id/text_header_select_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="18dp"
+        android:text="Set the quantity per taking"/>
+
+
+
+    <EditText
+        android:id="@+id/np_quantity"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/text_header_select_quantity"
+        app:layout_constraintStart_toStartOf="@id/text_header_select_quantity"
+        android:layout_marginTop="10dp"
+        android:hint="05"
+        />
+
+    <TextView
+        android:id="@+id/text_medecine_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/np_quantity"
+        app:layout_constraintTop_toBottomOf="@id/text_header_select_quantity"
+        app:layout_constraintBottom_toBottomOf="@+id/np_quantity"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="18dp"
+        android:text="Comprimé"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

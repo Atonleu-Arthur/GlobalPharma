@@ -13,22 +13,22 @@ import androidx.fragment.app.Fragment;
 import com.example.globalpharma.R;
 
 public class MedicationFragment extends Fragment {
-    public MedicationFragment(){
-    }
+  public MedicationFragment(){
+  }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+  }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_medication, container, false);
-    }
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_medication, container, false);
+  }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+  }
 }

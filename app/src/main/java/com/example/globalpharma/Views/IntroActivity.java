@@ -144,7 +144,7 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(IntroActivity.this, Accueil.class);
+                Intent i = new Intent(IntroActivity.this, RegisterActivity.class);
                 startActivity(i);
                 finish();
 
